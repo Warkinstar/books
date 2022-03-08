@@ -5,4 +5,12 @@
 
 {% block content %}
     <h1>Homepage</h1>
+    {% if user.is_authenticated %}
+        Привет {{ user.email }}!
+        <p><a href="{% url 'logout' %}">Выход</a></p>
+    {% else %}
+        <p>Вход не выполнен</p>
+        <a href="{% url 'login' %}">Войти</a>
+        <a href="{% url 'signup' %}">Зарегистрироваться</a>
+    {% endif %}
 {% endblock content %}
