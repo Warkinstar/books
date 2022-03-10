@@ -1,16 +1,18 @@
 <!-- templates/home.html -->
 {% extends '_base.html' %}
+{% load static %}
 
 {% block title %}Home{% endblock title %}
 
 {% block content %}
     <h1>Homepage</h1>
+    <img class="bookcover" src="{% static 'images/dfp.png' %}">
     {% if user.is_authenticated %}
-        Привет {{ user.email }}!
+        <p>Привет {{ user.email }}!</p>
         <p><a href="{% url 'logout' %}">Выход</a></p>
     {% else %}
         <p>Вход не выполнен</p>
-        <a href="{% url 'login' %}">Войти</a>
-        <a href="{% url 'signup' %}">Зарегистрироваться</a>
+        <p><a href="{% url 'login' %}">Войти</a></p>
+            <a href="{% url 'signup' %}">Зарегистрироваться</a>
     {% endif %}
 {% endblock content %}
