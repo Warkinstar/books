@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # Local
     'accounts',
     'pages',
+    'learning',
 ]
 
 MIDDLEWARE = [
