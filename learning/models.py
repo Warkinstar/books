@@ -17,6 +17,10 @@ class Book(models.Model):
     document = models.FileField(upload_to='documents/', blank=True)
 
     class Meta:
+        indexes = [
+            models.Index(fields=['id'], name='id_index'),
+        ]
+
         permissions = [
             ('special_status', 'Can read all books'),
         ]
