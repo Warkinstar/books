@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import TemplateView
 from django.views.generic import ListView, DetailView
@@ -21,3 +22,15 @@ class BookDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     template_name = 'learning/book_detail.html'
     login_url = 'account_login'
     permission_required = 'learning.special_status'
+
+
+class SearchResultsListView(ListView):
+    model = Book
+    context_object_name = 'book_list'
+    template_name = 'learning/search_results.html'
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        return Book.objects.filter(
+            Q(title__icontains=query) | Q(author__icontains=query)
+        )

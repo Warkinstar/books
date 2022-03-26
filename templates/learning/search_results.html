@@ -1,0 +1,15 @@
+{% extends '_base.html' %}
+
+{% block title %}Поиск{% endblock title%}
+
+
+{% block content %}
+    <h1>Результаты поиска</h1>
+    {% for book in book_list %}
+        <div>
+            <h3><a href="{{ book.get_ablolute }}">{{ book.title }}</a></h3>
+            <p>Автор: {{ book.author }}</p>
+            <p>Цена: {{ book.price }}</p>
+        </div>
+    {% endfor %}
+{% endblock content %}
