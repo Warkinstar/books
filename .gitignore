@@ -1,3 +1,5 @@
+docker-compose-prod.yml
+__pycache__/
 .idea/
 db.sqlite3
 *.pdf
