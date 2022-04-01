@@ -177,7 +177,7 @@ hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS = [ip[:-1] + '1' for ip in ips]
 
 SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
-SECURE_HSTS_SECONDS = env.int("DJANGO_SECURE_HSTS_SECONDS", default=6048)
+SECURE_HSTS_SECONDS = env.int("DJANGO_SECURE_HSTS_SECONDS", default=2592000)
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True)
 SECURE_HSTS_PRELOAD = env.bool("DJANGO_SECURE_HSTS_PRELOAD", default=True)
 SESSION_COOKIE_SECURE = env.bool("DJANGO_SESSION_COOKIE_SECURE", default=True)
