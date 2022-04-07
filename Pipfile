@@ -13,6 +13,7 @@ pillow = "*"
 django-debug-toolbar = "*"
 whitenoise = "*"
 gunicorn = "*"
+django-storages = {extras = ["google"], version = "*"}
 
 [dev-packages]
 
