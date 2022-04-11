@@ -9,13 +9,17 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
-<body>
+<body class="Site">
   <header>
     <!-- Fixed navbar -->
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4
      mb-3 bg-white border-bottom shadow-sm">
       <a href="{% url 'home' %}" class="navbar-brand my-0 mr-md-auto
       font-weight-normal">Информатика</a>
+      <form class="form-inline mt-2 mt-md-0" action="{% url 'search_results' %}" method="get">
+        <input name="q" class="form-control mr-sm-2"  type="text" placeholder="Поиск" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Искать</button>
+      </form>
       <nav class="my-2 my-md-0 mr-md-3">
         <a class="p-2 text-dark" href="{% url 'learning_list' %}">Обучение</a>
         <a class="p-2 text-dark" href="{% url 'about' %}">О кафедре</a>
@@ -33,6 +37,13 @@
     {% block content %}
     {% endblock content %}
   </div>
+
+  <footer id="sticky-footer" class="flex-shrink-0 py-4 bg-light text-black-90">
+    <div class="container text-center">
+      <small>Copyright &copy; Your Website</small>
+    </div>
+  </footer>
+  
   <!-- JavaScript -->
   <!-- JS, Popper.js, and jQuery -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

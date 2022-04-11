@@ -5,8 +5,16 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-    <h1>Homepage</h1>
+    <!--<h1>Homepage</h1>
     <form class="form-inline mt-2 mt-md-0" action="{% url 'search_results' %}" method="get">
         <input name="q" class="form-control mr-sm-2" type="text" placeholder="Поиск" aria-label="Search">
     </form>
+    -->
+    <div class="jumbotron">
+      <h1 class="display-4">Фильтры воды!</h1>
+      <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+      <hr class="my-4">
+      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+      <a class="btn btn-primary btn-lg" href="#" role="button">Список фильтров</a>
+    </div>
 {% endblock content %}

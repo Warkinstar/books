@@ -14,6 +14,7 @@ django-debug-toolbar = "*"
 whitenoise = "*"
 gunicorn = "*"
 django-storages = {extras = ["google"], version = "*"}
+easy-thumbnails = "*"
 
 [dev-packages]
 
