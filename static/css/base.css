@@ -1,19 +1,20 @@
 /* static/css/base.css */
+
 h1 {
-    color: red;
+    color: blue;
 }
 
 .bookcover {
-    height: 320px;
-    width: 220px;
+    height: auto;
+    width: 350px;
 }
 
+/* Для прилипания футера к низу */
 .Site {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
 }
-
 .container {
   flex: 1;
 }

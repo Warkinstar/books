@@ -1,10 +1,10 @@
 {% extends '_base.html' %}
 
-{% block title %}Books{% endblock title %}
+{% block title %}Filters{% endblock title %}
 
 {% block content %}
     {% for book in book_list %}
-     <div class="card mb-3" style="max-width: 700px;">
+     <div class="card mb-3" style="max-width: 1000px;">
       <div class="row no-gutters">
         <div class="col-md-4">
             <a href="{{ book.get_absolute_url }}"><img class="bookcover" src="{{ book.image.url }}" alt="{{ book.title }}"/></a>
@@ -12,8 +12,8 @@
         <div class="col-md-8">
           <div class="card-body">
               <h5><a class="card-title" href="{{ book.get_absolute_url }}">{{ book.title }}</a></h5>
-            <p class="card-text">{{ book.author }}</p>
-            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            <p class="card-text">{{ book.text }}</p>
+            <p class="card-text"><small class="text-muted">{{ book.date_added }}</small></p>
           </div>
         </div>
       </div>

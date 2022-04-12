@@ -11,18 +11,14 @@ class Book(models.Model):
         editable=False
     )
     title = models.CharField(max_length=200)
-    author = models.CharField(max_length=200)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    text = models.TextField()
     image = models.ImageField(upload_to='images/', blank=True)
     document = models.FileField(upload_to='documents/', blank=True)
+    date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         indexes = [
             models.Index(fields=['id'], name='id_index'),
-        ]
-
-        permissions = [
-            ('special_status', 'Can read all books'),
         ]
 
     def __str__(self):

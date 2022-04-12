@@ -9,19 +9,16 @@ class LearningListView(TemplateView):
     template_name = 'learning/learning_list.html'
 
 
-class BookListView(LoginRequiredMixin, ListView):
+class BookListView(ListView):
     model = Book
     context_object_name = 'book_list'
     template_name = 'learning/book_list.html'
-    login_url = 'account_login'
 
 
-class BookDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class BookDetailView(DetailView):
     model = Book
     context_object_name = 'book'
     template_name = 'learning/book_detail.html'
-    login_url = 'account_login'
-    permission_required = 'learning.special_status'
 
 
 class SearchResultsListView(ListView):
@@ -32,5 +29,5 @@ class SearchResultsListView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         return Book.objects.filter(
-            Q(title__icontains=query) | Q(author__icontains=query)
+            Q(title__icontains=query) | Q(text__icontains=query)
         )
