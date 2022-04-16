@@ -27,7 +27,7 @@ urlpatterns = [
 
     # Local apps
     path('', include('pages.urls')),
-    path('tovary/', include('learning.urls')), # path('learning/', include('learning.urls')),
+    path('learning/', include('learning.urls')),
 ]
 
 if settings.DEBUG:

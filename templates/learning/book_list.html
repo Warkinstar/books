@@ -1,13 +1,16 @@
 {% extends '_base.html' %}
 
-{% block title %}Filters{% endblock title %}
+{% block title %}Books{% endblock title %}
 
 {% block content %}
+    <a href="{% url 'book_new' %}" class="btn btn-primary btn-lg btn-block">Добавить запись</a>
     {% for book in book_list %}
      <div class="card mb-3" style="max-width: 1000px;">
       <div class="row no-gutters">
         <div class="col-md-4">
-            <a href="{{ book.get_absolute_url }}"><img class="bookcover" src="{{ book.image.url }}" alt="{{ book.title }}"/></a>
+            {% if book.image %}
+                <a href="{{ book.get_absolute_url }}"><img class="bookcover" src="{{ book.image.url }}" alt="{{ book.title }}"/></a>
+            {% endif %}
         </div>
         <div class="col-md-8">
           <div class="card-body">

@@ -5,16 +5,24 @@
 {% block title %}Home{% endblock title %}
 
 {% block content %}
-    <!--<h1>Homepage</h1>
-    <form class="form-inline mt-2 mt-md-0" action="{% url 'search_results' %}" method="get">
-        <input name="q" class="form-control mr-sm-2" type="text" placeholder="Поиск" aria-label="Search">
-    </form>
-    -->
-    <div class="jumbotron">
-      <h1 class="display-4">Каталог фильтров!</h1>
-      <p class="lead">Полезное приобретение и разумное вложение денег в собственное здоровье и долголетие.</p>
-      <hr class="my-4">
-      <p>Компания ТОО «Say Pure».</p>
-      <a class="btn btn-primary btn-lg" href="{% url 'book_list' %}" role="button">Список фильтров</a>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">WEB TEACHER</h5>
+            <p class="card-text">Для преподователей.</p>
+            <a href="http://teacher.dulaty.kz/" class="btn btn-primary" target="_blank">Перейти</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">STUDENT PORTAL</h5>
+            <p class="card-text">Для студентов.</p>
+            <a href="http://portal.dulaty.kz/" class="btn btn-primary" target="_blank">Перейти</a>
+          </div>
+        </div>
+      </div>
     </div>
 {% endblock content %}

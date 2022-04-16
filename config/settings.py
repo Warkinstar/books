@@ -122,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
 TIME_ZONE = 'UTC'
 
@@ -173,7 +173,7 @@ AUTHENTICATION_BACKENDS = (
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ACCOUNT_SESSION_REMEMBER = True  # Remember me box True = выкл
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False  # Ввод пароля один раз в Sign up
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True  # Ввод пароля один раз в Sign up
 
 # Вход по электронной почте
 ACCOUNT_USERNAME_REQUIRED = False

@@ -6,7 +6,8 @@ h1 {
 
 .bookcover {
     height: auto;
-    width: 350px;
+    max-width: 350px;
+    width: 100%;
 }
 
 /* Для прилипания футера к низу */
