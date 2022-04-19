@@ -10,10 +10,10 @@ class Book(models.Model):
         default=uuid.uuid4,
         editable=False
     )
-    title = models.CharField(max_length=200)
-    text = models.TextField()
-    image = models.ImageField(upload_to='images/', blank=True)
-    document = models.FileField(upload_to='documents/', blank=True)
+    title = models.CharField('Название', max_length=200)
+    text = models.TextField('Описание')
+    image = models.ImageField('Изображение', upload_to='images/', blank=True)
+    document = models.FileField('Документ', upload_to='documents/', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -42,3 +42,21 @@ class Review(models.Model):
 
     def __str__(self):
         return self.review
+
+
+@receiver(models.signals.post_delete, sender=Book)
+def auto_delete_document(sender, instance, **kargs):
+    file = instance.document
+    try:
+        file.storage.delete(name=file.name)
+    except:
+        print('nothing')
+
+
+@receiver(models.signals.post_delete, sender=Book)
+def auto_delete_document(sender, instance, **kargs):
+    file = instance.image
+    try:
+        file.storage.delete(name=file.name)
+    except:
+        print('nothing')
