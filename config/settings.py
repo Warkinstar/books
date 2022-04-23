@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'debug_toolbar',
     'easy_thumbnails',
+    'tinymce',
 
     # Local
     'accounts',
@@ -143,8 +144,8 @@ STATICFILES_FINDERS = [
 ]
 
 # django-storages[google]
-#MEDIA_URL = '/media/'
-#MEDIA_ROOT = str(BASE_DIR.joinpath('media'))
+#MEDIA_URL = '/media/'  # for local
+#MEDIA_ROOT = str(BASE_DIR.joinpath('media'))  # for local
 
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
     os.path.join(BASE_DIR, 'sixth-module-346216-011f4d6f053f.json'))
@@ -189,6 +190,7 @@ import socket
 hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
 INTERNAL_IPS = [ip[:-1] + '1' for ip in ips]
 
+# settings for deployment
 SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
 SECURE_HSTS_SECONDS = env.int("DJANGO_SECURE_HSTS_SECONDS", default=2592000)
 SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True)

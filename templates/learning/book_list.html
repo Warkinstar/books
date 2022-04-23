@@ -15,7 +15,7 @@
         <div class="col-md-8">
           <div class="card-body">
               <h5><a class="card-title" href="{{ book.get_absolute_url }}">{{ book.title }}</a></h5>
-            <p class="card-text">{{ book.text }}</p>
+            <p class="card-text">{{ book.text|safe }}</p>
             <p class="card-text"><small class="text-muted">{{ book.date_added }}</small></p>
           </div>
         </div>

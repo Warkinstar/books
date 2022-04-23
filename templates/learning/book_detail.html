@@ -7,7 +7,7 @@
             <img class="bookcover" src="{{ book.image.url }}" alt="{{ book.title }}">
         {% endif %}
         <h2><a href="">{{ book.title }}</a></h2>
-        <p>{{ book.text }}</p>
+        <p>{{ book.text|safe }}</p>
         <p>{{ book.date_added }}</p>
         {% if book.document %}
             <p><a href={{ book.document.url }}>Скачать</a></p>

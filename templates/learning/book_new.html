@@ -4,6 +4,9 @@
 {% block title %}New Book{% endblock title %}
 
 {% block content %}
+    <head>
+        {{ form.media }}
+    </head>
     <h1>Добавление:</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}

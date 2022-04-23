@@ -2,6 +2,8 @@ import uuid
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.urls import reverse
+from django.dispatch import receiver
+from tinymce.models import HTMLField
 
 
 class Book(models.Model):
@@ -11,7 +13,7 @@ class Book(models.Model):
         editable=False
     )
     title = models.CharField('Название', max_length=200)
-    text = models.TextField('Описание')
+    text = HTMLField()
     image = models.ImageField('Изображение', upload_to='images/', blank=True)
     document = models.FileField('Документ', upload_to='documents/', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -54,7 +56,7 @@ def auto_delete_document(sender, instance, **kargs):
 
 
 @receiver(models.signals.post_delete, sender=Book)
-def auto_delete_document(sender, instance, **kargs):
+def auto_delete_image(sender, instance, **kargs):
     file = instance.image
     try:
         file.storage.delete(name=file.name)

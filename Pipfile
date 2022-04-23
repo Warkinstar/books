@@ -15,6 +15,7 @@ whitenoise = "*"
 gunicorn = "*"
 django-storages = {extras = ["google"], version = "*"}
 easy-thumbnails = "*"
+django-tinymce = "*"
 
 [dev-packages]
 

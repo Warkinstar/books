@@ -28,6 +28,9 @@ urlpatterns = [
     # Local apps
     path('', include('pages.urls')),
     path('learning/', include('learning.urls')),
+
+    # tinymce editor
+    path('tinymce/', include('tinymce.urls')),
 ]
 
 if settings.DEBUG:
