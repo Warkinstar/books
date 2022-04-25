@@ -46,7 +46,56 @@ class Review(models.Model):
         return self.review
 
 
+class Topic(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+    title = models.CharField('Название темы', max_length=200)
+    image = models.ImageField('Изображение', upload_to='images/topics', blank=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['id'], name='id_indexT'),
+        ]
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('topic', args=[str(self.id)])
+
+
+class Record(models.Model):
+    """Информация, изученная пользователем по теме."""
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    title = models.CharField('Название темы', max_length=200)
+    text = HTMLField()
+    image = models.ImageField('Изображение', upload_to='images/records', blank=True)
+    document = models.FileField('Документ', upload_to='documents/records', blank=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        """Возвращает строковое представление модели. До 50 символов"""
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('record', args=[str(self.id)])
+
+
 @receiver(models.signals.post_delete, sender=Book)
+@receiver(models.signals.post_delete, sender=Record)
 def auto_delete_document(sender, instance, **kargs):
     file = instance.document
     try:
@@ -56,6 +105,8 @@ def auto_delete_document(sender, instance, **kargs):
 
 
 @receiver(models.signals.post_delete, sender=Book)
+@receiver(models.signals.post_delete, sender=Topic)
+@receiver(models.signals.post_delete, sender=Record)
 def auto_delete_image(sender, instance, **kargs):
     file = instance.image
     try:

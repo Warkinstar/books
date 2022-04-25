@@ -3,7 +3,10 @@
 {% block title %}Learning{% endblock title %}
 
 {% block content %}
-    <div>
-        <h2><a href="{% url 'book_list' %}">Книги</a></h2>
-    </div>
+    <h2><a href="{% url 'book_list' %}">Книги</a></h2>
+    {% for topic in topic_list %}
+        <h2><a href="{{ topic.get_absolute_url }}">{{ topic.title }}</a></p></h2>
+    {% endfor %}
+
+
 {% endblock content %}

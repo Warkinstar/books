@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Book, Review
+from .models import Book, Review, Topic, Record
 
 
 class ReviewInline(admin.TabularInline):
@@ -14,3 +14,5 @@ class BookAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Book, BookAdmin)
+admin.site.register(Topic)
+admin.site.register(Record)

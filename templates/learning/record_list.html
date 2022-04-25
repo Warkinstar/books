@@ -1,0 +1,24 @@
+{% extends '_base.html' %}
+
+{% block title %}Records{% endblock title %}
+
+{% block content %}
+    {% for record in record_list %}
+     <div class="card mb-3" style="max-width: 1000px;">
+      <div class="row no-gutters">
+        <div class="col-md-4">
+            {% if record.image %}
+                <a href="{{ record.get_absolute_url }}"><img class="bookcover" src="{{ record.image.url }}" alt="{{ record.title }}"/></a>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+              <h5><a class="card-title" href="{{ record.get_absolute_url }}">{{ record.title }}</a></h5>
+            <p class="card-text">{{ record.pre_text|safe }}</p>
+            <p class="card-text"><small class="text-muted">{{ record.date_added }}</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+{% endblock content %}

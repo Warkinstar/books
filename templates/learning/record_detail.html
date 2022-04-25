@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+
+{% block title %}Record Detail{% endblock title %}
+
+{% block content %}
+    <div class="book-detail">
+        {% if record.image %}
+            <img class="bookcover" src="{{ record.image.url }}" alt="{{ record.title }}">
+        {% endif %}
+        <h2><a href="">{{ record.title }}</a></h2>
+        <p>{{ record.text|safe }}</p>
+        <p>{{ record.date_added }}</p>
+        {% if record.document %}
+            <p><a href={{ record.document.url }}>Скачать</a></p>
+        {% endif %}
+    </div>
+{% endblock content %}
