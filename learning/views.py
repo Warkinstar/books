@@ -3,13 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.views.generic import TemplateView, FormView
 from django.views.generic import ListView, DetailView
 from .models import Book, Topic, Record
-from .forms import BookForm
+from .forms import BookForm, TopicForm, RecordForm
 from django.urls import reverse_lazy
+from django.contrib.auth import get_user_model
 
-'''
-class LearningListView(TemplateView):
-    template_name = 'learning/learning_list.html'
-'''
 
 class BookListView(ListView):
     model = Book
@@ -34,13 +31,27 @@ class BookNewView(FormView):
 
 
 class TopicListView(ListView):
+    """Список тем"""
     model = Topic
     context_object_name = 'topic_list'
     template_name = 'learning/learning_list.html'  # Список тем на странице '/learning/'
 
 
+class TopicNewView(FormView):
+    """Создание новой темы"""
+    template_name = 'learning/topic_new.html'
+    form_class = TopicForm
+    success_url = reverse_lazy('topic_list')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
 class RecordListView(DetailView):  # TopicDetailView
+    """Список записей темы"""
     model = Topic
+    context_object_name = 'topic'
     template_name = 'learning/record_list.html'
 
     def get_context_data(self, **kwargs):
@@ -50,9 +61,23 @@ class RecordListView(DetailView):  # TopicDetailView
 
 
 class RecordDetailView(DetailView):
+    """Личная страничка записи"""
     model = Record
     context_object_name = 'record'
     template_name = 'learning/record_detail.html'
+
+
+class RecordNewView(FormView):
+    """Создать новую запись (связанную с темой)"""
+    template_name = 'learning/record_new.html'
+    form_class = RecordForm
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.topic_id = self.kwargs['pk']
+        obj.save()
+        return super(RecordNewView, self).form_valid(form)
 
 
 class SearchResultsListView(ListView):
