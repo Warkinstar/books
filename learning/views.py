@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView
 from .models import Book, Topic, Record
 from .forms import BookForm, TopicForm, RecordForm
 from django.urls import reverse_lazy
+from django.urls import reverse
 from django.contrib.auth import get_user_model
 
 
@@ -71,13 +72,21 @@ class RecordNewView(FormView):
     """Создать новую запись (связанную с темой)"""
     template_name = 'learning/record_new.html'
     form_class = RecordForm
-    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.topic_id = self.kwargs['pk']
         obj.save()
         return super(RecordNewView, self).form_valid(form)
+
+    def get_success_url(self):
+        """Переход на список записей темы"""
+        return reverse('topic', kwargs={'pk': self.kwargs['pk']})
+
+''' Переход на созданную страницу (не работает)
+    def get_success_url(self):
+        return reverse('record', kwargs={'pk': self.obj.pk})
+'''
 
 
 class SearchResultsListView(ListView):
