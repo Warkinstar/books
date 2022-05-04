@@ -35,7 +35,7 @@ class TopicListView(ListView):
     """Список тем"""
     model = Topic
     context_object_name = 'topic_list'
-    template_name = 'learning/learning_list.html'  # Список тем на странице '/learning/'
+    template_name = 'learning/topic_list.html'  # Список тем на странице '/learning/'
 
 
 class TopicNewView(LoginRequiredMixin, FormView):
