@@ -1,4 +1,6 @@
 {% extends '_base.html' %}
+{% load static %}
+
 
 {% block title %}Records{% endblock title %}
 
@@ -10,6 +12,8 @@
         <div class="col-md-4">
             {% if record.image %}
                 <a href="{{ record.get_absolute_url }}"><img class="bookcover" src="{{ record.image.url }}" alt="{{ record.title }}"/></a>
+            {% else %}
+                <a href="{{ record.get_absolute_url }}"><img class="bookcover" src="{% static 'images/no_image.png' %}" alt="{{ record.title }}"/></a>
             {% endif %}
         </div>
         <div class="col-md-8">
