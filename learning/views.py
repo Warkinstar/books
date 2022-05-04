@@ -20,10 +20,11 @@ class BookDetailView(DetailView):
     template_name = 'learning/book_detail.html'
 
 
-class BookNewView(FormView):
+class BookNewView(LoginRequiredMixin, FormView):
     template_name = 'learning/book_new.html'
     form_class = BookForm
     success_url = reverse_lazy('book_list')
+    login_url = 'account_login'
 
     def form_valid(self, form):
         form.save()
@@ -37,11 +38,12 @@ class TopicListView(ListView):
     template_name = 'learning/learning_list.html'  # Список тем на странице '/learning/'
 
 
-class TopicNewView(FormView):
+class TopicNewView(LoginRequiredMixin, FormView):
     """Создание новой темы"""
     template_name = 'learning/topic_new.html'
     form_class = TopicForm
     success_url = reverse_lazy('topic_list')
+    login_url = 'account_login'
 
     def form_valid(self, form):
         form.save()
@@ -67,12 +69,14 @@ class RecordDetailView(DetailView):
     template_name = 'learning/record_detail.html'
 
 
-class RecordNewView(FormView):
+class RecordNewView(LoginRequiredMixin, FormView):
     """Создать новую запись (связанную с темой)"""
     template_name = 'learning/record_new.html'
     form_class = RecordForm
+    login_url = 'account_login'
 
     def form_valid(self, form):
+        """Привязка к теме и привязка к автору"""
         obj = form.save(commit=False)
         obj.topic_id = self.kwargs['pk']
         obj.author = self.request.user
@@ -90,6 +94,7 @@ class RecordNewView(FormView):
 
 
 class SearchResultsListView(ListView):
+    """Поиск по книгам (пока что)"""
     model = Book
     context_object_name = 'book_list'
     template_name = 'learning/search_results.html'
