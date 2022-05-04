@@ -20,7 +20,7 @@ class TopicForm(forms.ModelForm):
 class RecordForm(forms.ModelForm):
     class Meta:
         model = Record
-        fields = ('title', 'text', 'image', 'document', 'author')
+        fields = ('title', 'text', 'image', 'document')
         widgets = {
             'text': TinyMCE(attrs={'cols': 80, 'rows': 30}),
         }

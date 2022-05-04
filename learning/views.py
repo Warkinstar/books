@@ -6,7 +6,6 @@ from .models import Book, Topic, Record
 from .forms import BookForm, TopicForm, RecordForm
 from django.urls import reverse_lazy
 from django.urls import reverse
-from django.contrib.auth import get_user_model
 
 
 class BookListView(ListView):
@@ -76,6 +75,7 @@ class RecordNewView(FormView):
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.topic_id = self.kwargs['pk']
+        obj.author = self.request.user
         obj.save()
         return super(RecordNewView, self).form_valid(form)
 
