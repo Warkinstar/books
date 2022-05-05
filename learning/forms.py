@@ -9,6 +9,7 @@ class BookForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'text': TinyMCE(attrs={'cols': 80, 'rows': 30}),
+            'preview': TinyMCE(attrs={'cols': 80, 'rows': 10}),
         }
 
 class TopicForm(forms.ModelForm):
@@ -20,9 +21,10 @@ class TopicForm(forms.ModelForm):
 class RecordForm(forms.ModelForm):
     class Meta:
         model = Record
-        fields = ('title', 'text', 'image', 'document')
+        fields = ('title', 'preview', 'text', 'image', 'document')
         widgets = {
             'text': TinyMCE(attrs={'cols': 80, 'rows': 30}),
+            'preview': TinyMCE(attrs={'cols':80, 'rows': 30}),
         }
 
 

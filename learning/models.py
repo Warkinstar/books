@@ -13,6 +13,7 @@ class Book(models.Model):
         editable=False
     )
     title = models.CharField('Название', max_length=200)
+    preview = HTMLField('Превью', blank=True)
     text = HTMLField()
     image = models.ImageField('Изображение', upload_to='images/', blank=True)
     document = models.FileField('Документ', upload_to='documents/', blank=True)
@@ -77,7 +78,8 @@ class Record(models.Model):
     )
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     title = models.CharField('Название темы', max_length=200)
-    text = HTMLField()
+    preview = HTMLField('Превью', blank=True)
+    text = HTMLField('Описание')
     image = models.ImageField('Изображение', upload_to='images/records', blank=True)
     document = models.FileField('Документ', upload_to='documents/records', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
