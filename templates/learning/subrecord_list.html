@@ -1,0 +1,29 @@
+{% extends '_base.html' %}
+{% load static %}
+
+
+{% block title %}SubRecords{% endblock title %}
+
+{% block content %}
+   <!-- <a href= url 'subrecord_new' pk=subtopic.pk   class="btn btn-primary btn-lg btn-block">Добавить запись для подтемы</a> -->
+    {% for subrecord in subrecord_list %}
+     <div class="card mb-3" style="max-width: 1000px;">
+      <div class="row no-gutters">
+        <div class="col-md-4">
+            {% if subrecord.image %}
+                <a href="{{ subrecord.get_absolute_url }}"><img class="bookcover" src="{{ subrecord.image.url }}" alt="{{ subrecord.title }}"/></a>
+            {% else %}
+                <a href="{{ subrecord.get_absolute_url }}"><img class="bookcover" src="{% static 'images/no_image.png' %}" alt="{{ subrecord.title }}"/></a>
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+              <h5><a class="card-title" href="{{ subrecord.get_absolute_url }}">{{ subrecord.title }}</a></h5>
+            <p class="card-text">{{ subrecord.preview|safe }}</p>
+            <p class="card-text"><small class="text-muted">{{ subrecord.date_added }}</small></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+{% endblock content %}

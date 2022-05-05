@@ -2,7 +2,7 @@ from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import TemplateView, FormView
 from django.views.generic import ListView, DetailView
-from .models import Book, Topic, Record
+from .models import Book, Topic, Record, SubTopic, SubRecord
 from .forms import BookForm, TopicForm, RecordForm
 from django.urls import reverse_lazy
 from django.urls import reverse
@@ -51,7 +51,7 @@ class TopicNewView(LoginRequiredMixin, FormView):
 
 
 class RecordListView(DetailView):  # TopicDetailView
-    """Список записей темы"""
+    """Список записей и подТем темы"""
     model = Topic
     context_object_name = 'topic'
     template_name = 'learning/record_list.html'
@@ -59,6 +59,7 @@ class RecordListView(DetailView):  # TopicDetailView
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['record_list'] = self.object.record_set.all  # Получить связанную модель topic-record
+        context['subtopic_list'] = self.object.subtopic_set.all  # Список связанных подТем topic-subtopic
         return context
 
 
@@ -91,6 +92,24 @@ class RecordNewView(LoginRequiredMixin, FormView):
     def get_success_url(self):
         return reverse('record', kwargs={'pk': self.obj.pk})
 '''
+
+
+class SubRecordListView(DetailView):
+    """Список подЗаписей подТемы"""
+    model = SubTopic
+    context_object_name = 'subtopic'
+    template_name = 'learning/subrecord_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['subrecord_list'] = self.object.subrecord_set.all
+        return context
+
+
+class SubRecordDetailView(DetailView):
+    model = SubRecord
+    context_object_name = 'subrecord'
+    template_name = 'learning/subrecord_detail.html'
 
 
 class SearchResultsListView(ListView):

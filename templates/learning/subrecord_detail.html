@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+
+{% block title %}SubRecord Detail{% endblock title %}
+
+{% block content %}
+    <div class="book-detail">
+        {% if subrecord.image %}
+            <img class="bookcover" src="{{ subrecord.image.url }}" alt="{{ subrecord.title }}">
+        {% endif %}
+        <h2><a href="">{{ subrecord.title }}</a></h2>
+        <p>{{ subrecord.text|safe }}</p>
+        <p>{{ subrecord.date_added }}</p>
+        {% if subrecord.document %}
+            <p><a href={{ subrecord.document.url }}>Скачать</a></p>
+        {% endif %}
+    </div>
+{% endblock content %}

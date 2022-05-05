@@ -6,6 +6,9 @@
 
 {% block content %}
     <a href="{% url 'record_new' pk=topic.pk  %}" class="btn btn-primary btn-lg btn-block">Добавить запись</a>
+    {% for subtopic in subtopic_list %}
+        <h2><a href="{{ subtopic.get_absolute_url }}">{{ subtopic.title }}</a></p></h2>
+    {% endfor %}
     {% for record in record_list %}
      <div class="card mb-3" style="max-width: 1000px;">
       <div class="row no-gutters">
