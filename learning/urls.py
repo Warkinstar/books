@@ -4,6 +4,7 @@ from .views import SearchResultsListView
 from .views import TopicListView, RecordListView, RecordDetailView
 from .views import TopicNewView, RecordNewView
 from .views import SubRecordListView, SubRecordDetailView
+from .views import SubTopicNewView, SubRecordNewView
 
 urlpatterns = [
     path('books/', BookListView.as_view(), name='book_list'),
@@ -19,9 +20,9 @@ urlpatterns = [
 
     # SubTopic-SubRecord
     path('topic/subtopic-<uuid:pk>/', SubRecordListView.as_view(), name = 'subtopic'),  # Список подзаписей (записей подТемы)
-    # path('topic/<uuid:pk>/subtopic-new/', SubTopicNewView.as_view(), name='subtopic_new'),  # Новая запись опред-й темы (pk)
-    path('topic/subtopic/subrecord-<uuid:pk>/', SubRecordDetailView.as_view(), name='subrecord'),
-    #path('topic/subtopic-<uuid:pk>/subrecord-new/', SubRecordNewView.as_view(), name='subtopic_new'),
+    path('topic/<uuid:pk>/subtopic-new/', SubTopicNewView.as_view(), name='subtopic_new'),  # Новая запись опред-й темы (pk)
+    path('topic/subtopic/subrecord-<uuid:pk>/', SubRecordDetailView.as_view(), name='subrecord'),  #  Личная страница записи подТемы
+    path('topic/subtopic-<uuid:pk>/subrecord-new/', SubRecordNewView.as_view(), name='subrecord_new'),  # Добавление записи подТемы
 
     path('search/', SearchResultsListView.as_view(), name='search_results'),  # Поиск по книгам (пока что)
 ]

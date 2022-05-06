@@ -5,7 +5,7 @@
 {% block title %}SubRecords{% endblock title %}
 
 {% block content %}
-   <!-- <a href= url 'subrecord_new' pk=subtopic.pk   class="btn btn-primary btn-lg btn-block">Добавить запись для подтемы</a> -->
+    <a href="{% url 'subrecord_new' pk=subtopic.pk %}" class="btn btn-primary btn-lg btn-block">Добавить запись для подтемы</a>
     {% for subrecord in subrecord_list %}
      <div class="card mb-3" style="max-width: 1000px;">
       <div class="row no-gutters">

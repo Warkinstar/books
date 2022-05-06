@@ -5,6 +5,7 @@
 {% block title %}Records{% endblock title %}
 
 {% block content %}
+    <a href="{% url 'subtopic_new' pk=topic.pk %}" class="btn btn-primary btn-lg btn-block">Добавить подтему</a>
     <a href="{% url 'record_new' pk=topic.pk  %}" class="btn btn-primary btn-lg btn-block">Добавить запись</a>
     {% for subtopic in subtopic_list %}
         <h2><a href="{{ subtopic.get_absolute_url }}">{{ subtopic.title }}</a></p></h2>

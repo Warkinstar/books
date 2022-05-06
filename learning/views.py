@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.views.generic import TemplateView, FormView
 from django.views.generic import ListView, DetailView
 from .models import Book, Topic, Record, SubTopic, SubRecord
-from .forms import BookForm, TopicForm, RecordForm
+from .forms import BookForm, TopicForm, RecordForm, SubTopicForm, SubRecordForm
 from django.urls import reverse_lazy
 from django.urls import reverse
 
@@ -85,7 +85,7 @@ class RecordNewView(LoginRequiredMixin, FormView):
         return super(RecordNewView, self).form_valid(form)
 
     def get_success_url(self):
-        """Переход на список записей темы"""
+        """Переход на список записей и подзаписей темы"""
         return reverse('topic', kwargs={'pk': self.kwargs['pk']})
 
 ''' Переход на созданную страницу (не работает)
@@ -95,7 +95,7 @@ class RecordNewView(LoginRequiredMixin, FormView):
 
 
 class SubRecordListView(DetailView):
-    """Список подЗаписей подТемы"""
+    """Список записей подТемы"""
     model = SubTopic
     context_object_name = 'subtopic'
     template_name = 'learning/subrecord_list.html'
@@ -105,11 +105,49 @@ class SubRecordListView(DetailView):
         context['subrecord_list'] = self.object.subrecord_set.all
         return context
 
+class SubTopicNewView(LoginRequiredMixin, FormView):
+    template_name = 'learning/subtopic_new.html'
+    form_class = SubTopicForm
+    login_url = 'account_login'
+    # success_url = reverse_lazy('topic_list')
+
+    def form_valid(self, form):
+        """Привязка подТемы к Теме"""
+        obj = form.save(commit=False)
+        obj.topic_id = self.kwargs['pk']
+        obj.save()
+        return super(SubTopicNewView, self).form_valid(form)
+
+    def get_success_url(self):
+        """Переход на список записей и подТем темы"""
+        return reverse('topic', kwargs={'pk': self.kwargs['pk']})
 
 class SubRecordDetailView(DetailView):
     model = SubRecord
     context_object_name = 'subrecord'
     template_name = 'learning/subrecord_detail.html'
+
+
+class SubRecordNewView(LoginRequiredMixin, FormView):
+    """Создать новую запись(подзапись) подТемы"""
+    template_name = 'learning/subrecord_new.html'
+    form_class = SubRecordForm
+    login_url = 'account_login'
+    # success_url = reverse_lazy('topic_list')
+
+    def form_valid(self, form):
+        """Привязка записи к подтеме и к автору"""
+        obj = form.save(commit=False)
+        obj.topic_id = self.kwargs['pk']
+        obj.author = self.request.user
+        obj.save()
+        return super(SubRecordNewView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('subtopic', kwargs={'pk': self.kwargs['pk']})
+
+
+
 
 
 class SearchResultsListView(ListView):
