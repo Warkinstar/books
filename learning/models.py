@@ -125,8 +125,8 @@ class SubRecord(models.Model):
     title = models.CharField('Название темы', max_length=200)
     preview = HTMLField('Превью', blank=True)
     text = HTMLField('Описание')
-    image = models.ImageField('Изображение', upload_to='images/records', blank=True)
-    document = models.FileField('Документ', upload_to='documents/records', blank=True)
+    image = models.ImageField('Изображение', upload_to='images/subrecords', blank=True)
+    document = models.FileField('Документ', upload_to='documents/subrecords', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
         get_user_model(),
@@ -143,6 +143,7 @@ class SubRecord(models.Model):
 
 @receiver(models.signals.post_delete, sender=Book)
 @receiver(models.signals.post_delete, sender=Record)
+@receiver(models.signals.post_delete, sender=SubRecord)
 def auto_delete_document(sender, instance, **kargs):
     file = instance.document
     try:
@@ -153,7 +154,9 @@ def auto_delete_document(sender, instance, **kargs):
 
 @receiver(models.signals.post_delete, sender=Book)
 @receiver(models.signals.post_delete, sender=Topic)
+@receiver(models.signals.post_delete, sender=SubTopic)
 @receiver(models.signals.post_delete, sender=Record)
+@receiver(models.signals.post_delete, sender=SubRecord)
 def auto_delete_image(sender, instance, **kargs):
     file = instance.image
     try:
