@@ -121,7 +121,7 @@ class SubRecord(models.Model):
         default=uuid.uuid4,
         editable=False
     )
-    topic = models.ForeignKey(SubTopic, on_delete=models.CASCADE) # subtopic
+    subtopic = models.ForeignKey(SubTopic, on_delete=models.CASCADE) # subtopic
     title = models.CharField('Название темы', max_length=200)
     preview = HTMLField('Превью', blank=True)
     text = HTMLField('Описание')

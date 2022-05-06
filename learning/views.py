@@ -138,7 +138,7 @@ class SubRecordNewView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         """Привязка записи к подтеме и к автору"""
         obj = form.save(commit=False)
-        obj.topic_id = self.kwargs['pk']
+        obj.subtopic_id = self.kwargs['pk']
         obj.author = self.request.user
         obj.save()
         return super(SubRecordNewView, self).form_valid(form)
