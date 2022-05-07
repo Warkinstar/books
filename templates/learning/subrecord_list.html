@@ -20,6 +20,8 @@
           <div class="card-body">
               <h5><a class="card-title" href="{{ subrecord.get_absolute_url }}">{{ subrecord.title }}</a></h5>
             <p class="card-text">{{ subrecord.preview|safe }}</p>
+              <a href="{% url 'subrecord_update' subrecord.pk %}" class="card-text">Редактировать</a>
+              <a href="{% url 'subrecord_delete' subrecord.pk %}" class="card-text">Удалить</a>
             <p class="card-text"><small class="text-muted">{{ subrecord.date_added }}</small></p>
           </div>
         </div>

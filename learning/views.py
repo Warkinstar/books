@@ -144,6 +144,20 @@ class SubRecordDetailView(DetailView):
     template_name = 'learning/subrecord_detail.html'
 
 
+class SubRecordUpdateView(LoginRequiredMixin, UpdateView):
+    model = SubRecord
+    fields = ('title', 'preview', 'text', 'image', 'document')
+    template_name = 'learning/subrecord_update.html'
+    login_url = 'account_login'
+
+
+class SubRecordDeleteView(LoginRequiredMixin, DeleteView):
+    model = SubRecord
+    success_url = reverse_lazy('topic_list')
+    template_name = 'learning/subrecord_delete.html'
+    login_url = 'account_login'
+
+
 class SubRecordNewView(LoginRequiredMixin, FormView):
     """Создать новую запись(подзапись) подТемы"""
     template_name = 'learning/subrecord_new.html'
@@ -161,9 +175,6 @@ class SubRecordNewView(LoginRequiredMixin, FormView):
 
     def get_success_url(self):
         return reverse('subtopic', kwargs={'pk': self.kwargs['pk']})
-
-
-
 
 
 class SearchResultsListView(ListView):
