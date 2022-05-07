@@ -78,10 +78,14 @@ class RecordUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class RecordDeleteView(LoginRequiredMixin, DeleteView):
+    """Удаляет определенную запись"""
     model = Record
-    success_url = reverse_lazy('topic_list')
     template_name = 'learning/record_delete.html'
     login_url = 'account_login'
+
+    def get_success_url(self):
+        """Переход на тему удаленной записи"""
+        return reverse('topic', kwargs={'pk': self.object.topic_id})
 
 
 class RecordNewView(LoginRequiredMixin, FormView):
@@ -156,6 +160,10 @@ class SubRecordDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('topic_list')
     template_name = 'learning/subrecord_delete.html'
     login_url = 'account_login'
+
+    def get_success_url(self):
+        """Переход на подТему удаленной записи"""
+        return reverse('subtopic', kwargs={'pk': self.object.subtopic_id})
 
 
 class SubRecordNewView(LoginRequiredMixin, FormView):
