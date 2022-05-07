@@ -2,7 +2,7 @@ from django.urls import path
 from .views import BookListView, BookDetailView, BookNewView
 from .views import SearchResultsListView
 from .views import TopicListView, RecordListView, RecordDetailView
-from .views import TopicNewView, RecordNewView
+from .views import TopicNewView, RecordNewView, RecordUpdateView
 from .views import SubRecordListView, SubRecordDetailView
 from .views import SubTopicNewView, SubRecordNewView
 
@@ -16,6 +16,7 @@ urlpatterns = [
     path('topic-<uuid:pk>/', RecordListView.as_view(), name='topic'),  # Список записей темы('topic')
     path('topic-new/', TopicNewView.as_view(), name='topic_new'),  # Новая тема
     path('topic/record-<uuid:pk>/', RecordDetailView.as_view(), name='record'),  # Личная страница записи опред-й темы
+    path('topic/record-<uuid:pk>/update', RecordUpdateView.as_view(), name='record_update'),  # Страница редактирования записи
     path('topic/<uuid:pk>/record-new/', RecordNewView.as_view(), name='record_new'),  # Новая запись опред-й темы (pk)
 
     # SubTopic-SubRecord

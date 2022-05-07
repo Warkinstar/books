@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import TemplateView, FormView
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView
 from .models import Book, Topic, Record, SubTopic, SubRecord
 from .forms import BookForm, TopicForm, RecordForm, SubTopicForm, SubRecordForm
 from django.urls import reverse_lazy
@@ -68,6 +68,13 @@ class RecordDetailView(DetailView):
     model = Record
     context_object_name = 'record'
     template_name = 'learning/record_detail.html'
+
+
+class RecordUpdateView(LoginRequiredMixin, UpdateView):
+    model = Record
+    fields = ('title', 'preview', 'text', 'image', 'document')
+    template_name = 'learning/record_update.html'
+    login_url = 'account_login'
 
 
 class RecordNewView(LoginRequiredMixin, FormView):

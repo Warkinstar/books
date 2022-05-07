@@ -1,16 +1,16 @@
 {% extends '_base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}Новая запись{% endblock title %}
+{% block title %}Редактирование записи{% endblock title %}
 
 {% block content %}
     <head>
         {{ form.media }}
     </head>
-    <h1>Добавление:</h1>
+    <h1>Редактирование:</h1>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
-        <button class="btn btn-success" type="submit">Создать</button>
+        <button class="btn btn-success" type="submit">Сохранить</button>
     </form>
 {% endblock content %}
