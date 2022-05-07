@@ -1,0 +1,16 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Удаление записи{% endblock title %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="alert alert-danger" role="alert">
+            <p>Вы действительно хотите удалить запись "{{ object }}"?</p>
+            {{ form|crispy }}
+            <button class="btn btn-primary" type="Confirm">Удалить</button>
+        </div>
+
+    </form>
+{% endblock content %}
+<input type="submit" value="Confirm">

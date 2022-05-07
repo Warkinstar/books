@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views.generic import TemplateView, FormView
-from django.views.generic import ListView, DetailView, UpdateView
+from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from .models import Book, Topic, Record, SubTopic, SubRecord
 from .forms import BookForm, TopicForm, RecordForm, SubTopicForm, SubRecordForm
 from django.urls import reverse_lazy
@@ -77,6 +77,13 @@ class RecordUpdateView(LoginRequiredMixin, UpdateView):
     login_url = 'account_login'
 
 
+class RecordDeleteView(LoginRequiredMixin, DeleteView):
+    model = Record
+    success_url = reverse_lazy('topic_list')
+    template_name = 'learning/record_delete.html'
+    login_url = 'account_login'
+
+
 class RecordNewView(LoginRequiredMixin, FormView):
     """Создать новую запись (связанную с темой)"""
     template_name = 'learning/record_new.html'
@@ -101,17 +108,6 @@ class RecordNewView(LoginRequiredMixin, FormView):
 '''
 
 
-class SubRecordListView(DetailView):
-    """Список записей подТемы"""
-    model = SubTopic
-    context_object_name = 'subtopic'
-    template_name = 'learning/subrecord_list.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['subrecord_list'] = self.object.subrecord_set.all
-        return context
-
 class SubTopicNewView(LoginRequiredMixin, FormView):
     template_name = 'learning/subtopic_new.html'
     form_class = SubTopicForm
@@ -128,6 +124,19 @@ class SubTopicNewView(LoginRequiredMixin, FormView):
     def get_success_url(self):
         """Переход на список записей и подТем темы"""
         return reverse('topic', kwargs={'pk': self.kwargs['pk']})
+
+
+class SubRecordListView(DetailView):
+    """Список записей подТемы"""
+    model = SubTopic
+    context_object_name = 'subtopic'
+    template_name = 'learning/subrecord_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['subrecord_list'] = self.object.subrecord_set.all
+        return context
+
 
 class SubRecordDetailView(DetailView):
     model = SubRecord

@@ -25,6 +25,7 @@
               <h5><a class="card-title" href="{{ record.get_absolute_url }}">{{ record.title }}</a></h5>
             <p class="card-text">{{ record.preview|safe }}</p>
             <a href="{% url 'record_update' record.pk %}" class="card-text">Редактировать</a>
+            <a href="{% url 'record_delete' record.pk %}" class="card-text">Удалить</a>
             <p class="card-text"><small class="text-muted">{{ record.date_added }}</small></p>
           </div>
         </div>
