@@ -4,10 +4,33 @@
 
 {% block content %}
     <h1>Результаты поиска</h1>
-    {% for book in book_list %}
+
+    {% for object in topic_list %}
         <div>
-            <h3><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></h3>
-            <p>{{ book.date_added }}</p>
+            <h3><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h3>
+            <p>{{ object.date_added }}</p>
         </div>
     {% endfor %}
+
+    {% for object in record_list %}
+        <div>
+            <h3><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h3>
+            <p>{{ object.date_added }}</p>
+        </div>
+    {% endfor %}
+
+    {% for object in subtopic_list %}
+        <div>
+            <h3><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h3>
+            <p>{{ object.date_added }}</p>
+        </div>
+    {% endfor %}
+
+    {% for object in subrecord_list %}
+        <div>
+            <h3><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h3>
+            <p>{{ object.date_added }}</p>
+        </div>
+    {% endfor %}
+
 {% endblock content %}

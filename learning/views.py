@@ -186,13 +186,15 @@ class SubRecordNewView(LoginRequiredMixin, FormView):
 
 
 class SearchResultsListView(ListView):
-    """Поиск по книгам (пока что)"""
-    model = Book
-    context_object_name = 'book_list'
+    """Поиск по Темам, Записям, ПодТемам, ПодЗаписям"""
+    model = Topic
     template_name = 'learning/search_results.html'
 
-    def get_queryset(self):
+    def get_context_data(self, **kwargs):
         query = self.request.GET.get('q')
-        return Book.objects.filter(
-            Q(title__icontains=query) | Q(text__icontains=query)
-        )
+        context = super().get_context_data(**kwargs)
+        context['topic_list'] = Topic.objects.filter(Q(title__icontains=query))
+        context['record_list'] = Record.objects.filter(Q(title__icontains=query) | Q(preview__icontains=query) | Q(text__icontains=query))
+        context['subtopic_list'] = SubTopic.objects.filter(Q(title__icontains=query))
+        context['subrecord_list'] = SubRecord.objects.filter(Q(title__icontains=query) | Q(preview__icontains=query) | Q(text__icontains=query))
+        return context
