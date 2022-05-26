@@ -185,7 +185,7 @@ class SubRecordNewView(LoginRequiredMixin, FormView):
         return reverse('subtopic', kwargs={'pk': self.kwargs['pk']})
 
 
-class SearchResultsListView(ListView):
+class SearchResultsListView(ListView):  # Полнотекстный поиск нужен ли?
     """Поиск по Темам, Записям, ПодТемам, ПодЗаписям"""
     model = Topic
     template_name = 'learning/search_results.html'
