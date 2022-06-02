@@ -3,4 +3,5 @@ from django.db import models
 
 
 class CustomUser(AbstractUser):
+    """Можем дополнить различными полями"""
     pass

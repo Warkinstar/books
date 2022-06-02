@@ -95,7 +95,7 @@ class Record(models.Model):
         editable=False
     )
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    title = models.CharField('Название темы', max_length=200)
+    title = models.CharField('Название темы записи', max_length=200)
     preview = HTMLField('Превью', blank=True)
     text = HTMLField('Описание')
     image = models.ImageField('Изображение', upload_to='images/records', blank=True)
@@ -122,7 +122,7 @@ class SubRecord(models.Model):
         editable=False
     )
     subtopic = models.ForeignKey(SubTopic, on_delete=models.CASCADE) # subtopic
-    title = models.CharField('Название темы', max_length=200)
+    title = models.CharField('Название темы записи', max_length=200)
     preview = HTMLField('Превью', blank=True)
     text = HTMLField('Описание')
     image = models.ImageField('Изображение', upload_to='images/subrecords', blank=True)

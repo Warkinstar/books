@@ -2,14 +2,14 @@
 {% load static %}
 
 
-{% block title %}Records{% endblock title %}
+{% block title %}{{ topic }}{% endblock title %}
 
 {% block content %}
     <a href="{% url 'topic_list' %}" class="">Обучение</a> > <a href="{% url 'topic' topic.id %}" class="">{{ topic }}</a>
     <a href="{% url 'subtopic_new' pk=topic.pk %}" class="btn btn-primary btn-sm">Добавить подтему</a>
     <a href="{% url 'record_new' pk=topic.pk  %}" class="btn btn-secondary btn-sm">Добавить запись</a>
     {% for subtopic in subtopic_list %}
-        <h2><a href="{{ subtopic.get_absolute_url }}">{{ subtopic.title }}</a></p></h2>
+        <h2><a href="{{ subtopic.get_absolute_url }}">{{ subtopic.title }}</a></h2>
     {% endfor %}
     {% for record in record_list %}
      <div class="card mb-3" style="max-width: 1000px;">

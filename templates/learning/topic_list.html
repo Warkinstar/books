@@ -1,12 +1,12 @@
 {% extends '_base.html' %}
 
-{% block title %}Learning{% endblock title %}
+{% block title %}Обучение{% endblock title %}
 
 {% block content %}
     <a href="{% url 'topic_new' %}" class="btn btn-primary btn-lg btn-block">Добавить тему</a>
     <!-- <h2><a href="{% url 'book_list' %}">Книги</a></h2> -->
     {% for topic in topic_list %}
-        <h2><a href="{{ topic.get_absolute_url }}">{{ topic.title }}</a></p></h2>
+        <h2><a href="{{ topic.get_absolute_url }}">{{ topic.title }}</a></h2>
     {% endfor %}
 
 
