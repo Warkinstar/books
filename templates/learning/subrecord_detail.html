@@ -17,7 +17,7 @@
         <p>{{ subrecord.text|safe }}</p>
         <p>{{ subrecord.date_added }}</p>
         {% if subrecord.document %}
-            <p><a href={{ subrecord.document.url }}>Скачать</a></p>
+            <p><a href={{ subrecord.document.url }}>Скачать {{ subrecord.document.size|filesizeformat }}</a></p>
         {% endif %}
     </div>
 {% endblock content %}

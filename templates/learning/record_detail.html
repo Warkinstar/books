@@ -16,7 +16,7 @@
         <p>{{ record.text|safe }}</p>
         <p>{{ record.date_added }}</p>
         {% if record.document %}
-            <p><a href={{ record.document.url }}>Скачать</a></p>
+            <p><a href={{ record.document.url }}>Скачать {{ record.document.size|filesizeformat }}</a></p>
         {% endif %}
     </div>
 {% endblock content %}
