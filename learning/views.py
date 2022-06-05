@@ -1,11 +1,13 @@
 from django.db.models import Q
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.views.generic import TemplateView, FormView
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
 from .models import Book, Topic, Record, SubTopic, SubRecord
 from .forms import BookForm, TopicForm, RecordForm, SubTopicForm, SubRecordForm
 from django.urls import reverse_lazy
 from django.urls import reverse
+
+group = 'teachers'  # Используется для проверки состояния пользовотеля в группе
 
 
 class BookListView(ListView):
@@ -38,12 +40,15 @@ class TopicListView(ListView):
     template_name = 'learning/topic_list.html'  # Список тем на странице '/learning/'
 
 
-class TopicNewView(LoginRequiredMixin, FormView):
+class TopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     """Создание новой темы"""
     template_name = 'learning/topic_new.html'
     form_class = TopicForm
     success_url = reverse_lazy('topic_list')
     login_url = 'account_login'
+
+    def test_func(self):
+        return self.request.user.groups.filter(name=group).exists()  # Объект еще пока не существует
 
     def form_valid(self, form):
         form.save()
@@ -70,29 +75,41 @@ class RecordDetailView(DetailView):
     template_name = 'learning/record_detail.html'
 
 
-class RecordUpdateView(LoginRequiredMixin, UpdateView):
+class RecordUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Record
     fields = ('title', 'preview', 'text', 'image', 'document')
     template_name = 'learning/record_update.html'
     login_url = 'account_login'
 
+    def test_func(self):
+        """Если вернет True откроет доступ"""
+        obj = self.get_object()
+        return obj.author == self.request.user or self.request.user.groups.filter(name=group).exists()
 
-class RecordDeleteView(LoginRequiredMixin, DeleteView):
+
+class RecordDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     """Удаляет определенную запись"""
     model = Record
     template_name = 'learning/record_delete.html'
     login_url = 'account_login'
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user or self.request.user.groups.filter(name=group).exists()
 
     def get_success_url(self):
         """Переход на тему удаленной записи"""
         return reverse('topic', kwargs={'pk': self.object.topic_id})
 
 
-class RecordNewView(LoginRequiredMixin, FormView):
+class RecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     """Создать новую запись (связанную с темой)"""
     template_name = 'learning/record_new.html'
     form_class = RecordForm
     login_url = 'account_login'
+
+    def test_func(self):
+        return self.request.user.groups.filter(name=group).exists()
 
     def form_valid(self, form):
         """Привязка к теме и привязка к автору"""
@@ -106,17 +123,21 @@ class RecordNewView(LoginRequiredMixin, FormView):
         """Переход на список записей и подзаписей темы"""
         return reverse('topic', kwargs={'pk': self.kwargs['pk']})
 
+
 ''' Переход на созданную страницу (не работает)
     def get_success_url(self):
         return reverse('record', kwargs={'pk': self.obj.pk})
 '''
 
 
-class SubTopicNewView(LoginRequiredMixin, FormView):
+class SubTopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     template_name = 'learning/subtopic_new.html'
     form_class = SubTopicForm
     login_url = 'account_login'
     # success_url = reverse_lazy('topic_list')
+
+    def test_func(self):
+        return self.request.user.groups.filter(name=group).exists()
 
     def form_valid(self, form):
         """Привязка подТемы к Теме"""
@@ -148,30 +169,41 @@ class SubRecordDetailView(DetailView):
     template_name = 'learning/subrecord_detail.html'
 
 
-class SubRecordUpdateView(LoginRequiredMixin, UpdateView):
+class SubRecordUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = SubRecord
     fields = ('title', 'preview', 'text', 'image', 'document')
     template_name = 'learning/subrecord_update.html'
     login_url = 'account_login'
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user or self.request.user.groups.filter(name=group).exists()
 
-class SubRecordDeleteView(LoginRequiredMixin, DeleteView):
+
+class SubRecordDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = SubRecord
     success_url = reverse_lazy('topic_list')
     template_name = 'learning/subrecord_delete.html'
     login_url = 'account_login'
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user or self.request.user.groups.filter(name=group).exists()
 
     def get_success_url(self):
         """Переход на подТему удаленной записи"""
         return reverse('subtopic', kwargs={'pk': self.object.subtopic_id})
 
 
-class SubRecordNewView(LoginRequiredMixin, FormView):
+class SubRecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     """Создать новую запись(подзапись) подТемы"""
     template_name = 'learning/subrecord_new.html'
     form_class = SubRecordForm
     login_url = 'account_login'
     # success_url = reverse_lazy('topic_list')
+
+    def test_func(self):
+        return self.request.user.groups.filter(name=group).exists()
 
     def form_valid(self, form):
         """Привязка записи к подтеме и к автору"""
@@ -194,7 +226,9 @@ class SearchResultsListView(ListView):  # Полнотекстный поиск 
         query = self.request.GET.get('q')
         context = super().get_context_data(**kwargs)
         context['topic_list'] = Topic.objects.filter(Q(title__icontains=query))
-        context['record_list'] = Record.objects.filter(Q(title__icontains=query) | Q(preview__icontains=query) | Q(text__icontains=query))
+        context['record_list'] = Record.objects.filter(
+            Q(title__icontains=query) | Q(preview__icontains=query) | Q(text__icontains=query))
         context['subtopic_list'] = SubTopic.objects.filter(Q(title__icontains=query))
-        context['subrecord_list'] = SubRecord.objects.filter(Q(title__icontains=query) | Q(preview__icontains=query) | Q(text__icontains=query))
+        context['subrecord_list'] = SubRecord.objects.filter(
+            Q(title__icontains=query) | Q(preview__icontains=query) | Q(text__icontains=query))
         return context
