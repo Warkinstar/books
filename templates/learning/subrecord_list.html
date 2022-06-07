@@ -1,5 +1,6 @@
 {% extends '_base.html' %}
 {% load static %}
+{% load has_group %}
 
 
 {% block title %}{{ subtopic }}{% endblock title %}
@@ -8,7 +9,9 @@
     <a href="{% url 'topic_list' %}" class="">Обучение</a> >
     <a href="{% url 'topic' subtopic.topic_id  %}" class="">{{ subtopic.topic }}</a> >
     <a href="{% url 'subtopic' subtopic.id %}" class="">{{ subtopic }}</a>
-    <a href="{% url 'subrecord_new' pk=subtopic.pk  %}" class="btn btn-secondary btn-sm">Добавить запись</a>
+    {% if request.user|has_group:'teachers' %}
+        <a href="{% url 'subrecord_new' pk=subtopic.pk  %}" class="btn btn-secondary btn-sm">Добавить запись</a>
+    {% endif %}
     {% for subrecord in subrecord_list %}
      <div class="card mb-3" style="max-width: 1000px;">
       <div class="row no-gutters">
@@ -22,10 +25,12 @@
         <div class="col-md-8">
           <div class="card-body">
               <h5><a class="card-title" href="{{ subrecord.get_absolute_url }}">{{ subrecord.title }}</a></h5>
-            <p class="card-text">{{ subrecord.preview|safe }}</p>
-            <a href="{% url 'subrecord_update' subrecord.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
-            <a href="{% url 'subrecord_delete' subrecord.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
-            <p class="card-text"><small class="text-muted">{{ subrecord.date_added }}</small></p>
+              <p class="card-text">{{ subrecord.preview|safe }}</p>
+              {% if request.user|has_group:'teachers' or subrecord.author == request.user %}
+                <a href="{% url 'subrecord_update' subrecord.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
+                <a href="{% url 'subrecord_delete' subrecord.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
+              {% endif %}
+              <p class="card-text"><small class="text-muted">{{ subrecord.date_added }}</small></p>
           </div>
         </div>
       </div>

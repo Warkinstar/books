@@ -1,4 +1,5 @@
 {% extends '_base.html' %}
+{% load has_group %}
 
 {% block title %}{{ subrecord }}{% endblock title %}
 
@@ -12,8 +13,10 @@
             <img class="bookcover" src="{{ subrecord.image.url }}" alt="{{ subrecord.title }}">
         {% endif %}
         <h2><a href="">{{ subrecord.title }}</a></h2>
-        <a href="{% url 'subrecord_update' subrecord.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
-        <a href="{% url 'subrecord_delete' subrecord.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
+        {% if request.user|has_group:'teachers' or subrecord.author == request.user %}
+            <a href="{% url 'subrecord_update' subrecord.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
+            <a href="{% url 'subrecord_delete' subrecord.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
+        {% endif %}
         <p>{{ subrecord.text|safe }}</p>
         <p>{{ subrecord.date_added }}</p>
         {% if subrecord.document %}
