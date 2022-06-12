@@ -56,6 +56,10 @@ class Topic(models.Model):
     title = models.CharField('Название темы', max_length=200)
     image = models.ImageField('Изображение', upload_to='images/topics', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+    )
 
     class Meta:
         indexes = [
@@ -79,6 +83,10 @@ class SubTopic(models.Model):
     title = models.CharField('Название подтемы', max_length=200)
     image = models.ImageField('Изображение', upload_to='images/subtopics', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+    )
 
     def __str__(self):
         return self.title

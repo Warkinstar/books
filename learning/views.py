@@ -51,7 +51,9 @@ class TopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
         return self.request.user.groups.filter(name=group).exists()  # Объект еще пока не существует
 
     def form_valid(self, form):
-        form.save()
+        obj = form.save(commit=False)
+        obj.author = self.request.user
+        obj.save()
         return super().form_valid(form)
 
 
@@ -142,6 +144,7 @@ class SubTopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     def form_valid(self, form):
         """Привязка подТемы к Теме"""
         obj = form.save(commit=False)
+        obj.author = self.request.user
         obj.topic_id = self.kwargs['pk']
         obj.save()
         return super(SubTopicNewView, self).form_valid(form)
