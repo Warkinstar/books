@@ -6,6 +6,15 @@ from django.dispatch import receiver
 from tinymce.models import HTMLField
 
 
+ACCESS_PUBLIC = 0
+ACCESS_TEACHER = 1
+ACCESS_PRIVATE = 2
+ACCESS_LEVEL_CHOICES = [
+    (ACCESS_PUBLIC, 'Все'),
+    (ACCESS_TEACHER, 'Преподаватели'),
+    (ACCESS_PRIVATE, 'Только я'),
+]
+
 class Book(models.Model):
     id = models.UUIDField(
         primary_key=True,
@@ -54,6 +63,8 @@ class Topic(models.Model):
         editable=False
     )
     title = models.CharField('Название темы', max_length=200)
+    access_level = models.IntegerField("Доступ", help_text='Кто видит эту тему и имеет к ней доступ',
+                                       choices=ACCESS_LEVEL_CHOICES, default=ACCESS_PUBLIC)
     image = models.ImageField('Изображение', upload_to='images/topics', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
@@ -81,6 +92,8 @@ class SubTopic(models.Model):
     )
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     title = models.CharField('Название подтемы', max_length=200)
+    access_level = models.IntegerField('Имеют доступ', help_text='Кто видит эту тему и имеет к ней доступ',
+                                       choices=ACCESS_LEVEL_CHOICES, default=ACCESS_PUBLIC)
     image = models.ImageField('Изображение', upload_to='images/subtopics', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
@@ -106,6 +119,8 @@ class Record(models.Model):
     title = models.CharField('Название темы записи', max_length=200)
     preview = HTMLField('Превью', blank=True)
     text = HTMLField('Описание')
+    access_level = models.IntegerField('Имеют доступ', help_text='Кто видит эту запись и имеет к ней доступ',
+                                       choices=ACCESS_LEVEL_CHOICES, default=ACCESS_PUBLIC)
     image = models.ImageField('Изображение', upload_to='images/records', blank=True)
     document = models.FileField('Документ', upload_to='documents/records', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
@@ -133,6 +148,8 @@ class SubRecord(models.Model):
     title = models.CharField('Название темы записи', max_length=200)
     preview = HTMLField('Превью', blank=True)
     text = HTMLField('Описание')
+    access_level = models.IntegerField('Имеют доступ', help_text='Кто видит эту запись и имеет к ней доступ',
+                                       choices=ACCESS_LEVEL_CHOICES, default=ACCESS_PUBLIC)
     image = models.ImageField('Изображение', upload_to='images/subrecords', blank=True)
     document = models.FileField('Документ', upload_to='documents/subrecords', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
