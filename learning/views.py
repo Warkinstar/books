@@ -7,7 +7,7 @@ from .forms import BookForm, TopicForm, RecordForm, SubTopicForm, SubRecordForm
 from django.urls import reverse_lazy
 from django.urls import reverse
 
-group = 'teachers'  # Используется для проверки состояния пользовотеля в группе
+group = 'teachers'  # Используется для проверки состояния пользователя в группе
 
 
 class BookListView(ListView):
@@ -39,6 +39,23 @@ class TopicListView(ListView):
     context_object_name = 'topic_list'
     template_name = 'learning/topic_list.html'  # Список тем на странице '/learning/'
 
+    def get_context_data(self, **kwargs):
+        """Сортировка по уровням доступа 0-все, 1-teachers, 3-только автор"""
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_authenticated:  # Если вход выполнен
+            if user.groups.filter(name=group).exists():  # group 'teachers'
+                # context['topic_list'] = self.object_list.filter(access_level=1) Можно и так
+                context['topic_list'] = Topic.objects.filter(Q(access_level=0) | Q(access_level=1) | Q(author=user))
+            else:  # Просто авторизованный пользователь
+                context['topic_list'] = Topic.objects.filter(Q(access_level=0) | Q(author=user))
+            if user.is_superuser:  # админ
+                context['topic_list'] = Topic.objects.all()
+        else:  # Гости
+            context['topic_list'] = Topic.objects.filter(Q(access_level=0))
+
+        return context
+
 
 class TopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     """Создание новой темы"""
@@ -57,29 +74,59 @@ class TopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
         return super().form_valid(form)
 
 
-class RecordListView(DetailView):  # TopicDetailView
+class RecordListView(UserPassesTestMixin, DetailView):  # TopicDetailView
     """Список записей и подТем темы"""
     model = Topic
     context_object_name = 'topic'
     template_name = 'learning/record_list.html'
 
+    def test_func(self):
+        obj = self.get_object()
+        if obj.access_level == 1:
+            return self.request.user.groups.filter(name=group).exists() or obj.author == self.request.user
+        elif obj.access_level == 2:
+            return obj.author == self.request.user or self.request.user.is_superuser
+        else:
+            return True
+
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['record_list'] = self.object.record_set.all  # Получить связанную модель topic-record
-        context['subtopic_list'] = self.object.subtopic_set.all  # Список связанных подТем topic-subtopic
+        user = self.request.user
+        if user.is_authenticated:
+            if user.groups.filter(name=group).exists():
+                context['record_list'] = self.object.record_set.filter(Q(access_level=0) | Q(access_level=1) | Q(author=user))
+                context['subtopic_list'] = self.object.subtopic_set.filter(Q(access_level=0) | Q(access_level=1) | Q(author=user))
+            else:
+                context['record_list'] = self.object.record_set.filter(Q(access_level=0) | Q(author=user))
+                context['subtopic_list'] = self.object.subtopic_set.filter(Q(access_level=0) | Q(author=user))
+        else:
+            context['record_list'] = self.object.record_set.filter(Q(access_level=0))
+            context['subtopic_list'] = self.object.subtopic_set.filter(Q(access_level=0))
+        #context['record_list'] = self.object.record_set.all  # Получить связанную модель topic-record
+        #context['subtopic_list'] = self.object.subtopic_set.all  # Список связанных подТем topic-subtopic
         return context
 
 
-class RecordDetailView(DetailView):
+class RecordDetailView(UserPassesTestMixin, DetailView):
     """Личная страничка записи"""
     model = Record
     context_object_name = 'record'
     template_name = 'learning/record_detail.html'
 
+    def test_func(self):
+        obj = self.get_object()
+        if obj.access_level == 1:
+            return self.request.user.groups.filter(name=group).exists() or self.request.user.is_superuser
+        elif obj.access_level == 2:
+            return obj.author == self.request.user or self.request.user.is_superuser
+        else:
+            return True
+
 
 class RecordUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Record
-    fields = ('title', 'preview', 'text', 'image', 'document')
+    fields = ('title', 'preview', 'text', 'access_level', 'image', 'document')
     template_name = 'learning/record_update.html'
     login_url = 'account_login'
 
@@ -136,6 +183,7 @@ class SubTopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     template_name = 'learning/subtopic_new.html'
     form_class = SubTopicForm
     login_url = 'account_login'
+
     # success_url = reverse_lazy('topic_list')
 
     def test_func(self):
@@ -174,7 +222,7 @@ class SubRecordDetailView(DetailView):
 
 class SubRecordUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = SubRecord
-    fields = ('title', 'preview', 'text', 'image', 'document')
+    fields = ('title', 'preview', 'text', 'access_level', 'image', 'document')
     template_name = 'learning/subrecord_update.html'
     login_url = 'account_login'
 
@@ -203,6 +251,7 @@ class SubRecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     template_name = 'learning/subrecord_new.html'
     form_class = SubRecordForm
     login_url = 'account_login'
+
     # success_url = reverse_lazy('topic_list')
 
     def test_func(self):
