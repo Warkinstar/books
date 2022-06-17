@@ -100,6 +100,9 @@ class RecordListView(UserPassesTestMixin, DetailView):  # TopicDetailView
             else:
                 context['record_list'] = self.object.record_set.filter(Q(access_level=0) | Q(author=user))
                 context['subtopic_list'] = self.object.subtopic_set.filter(Q(access_level=0) | Q(author=user))
+            if user.is_superuser:
+                context['record_list'] = self.object.record_set.all()
+                context['subtopic_list'] = self.object.subtopic_set.all()
         else:
             context['record_list'] = self.object.record_set.filter(Q(access_level=0))
             context['subtopic_list'] = self.object.subtopic_set.filter(Q(access_level=0))
@@ -202,22 +205,51 @@ class SubTopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
         return reverse('topic', kwargs={'pk': self.kwargs['pk']})
 
 
-class SubRecordListView(DetailView):
+class SubRecordListView(UserPassesTestMixin, DetailView):
     """Список записей подТемы"""
     model = SubTopic
     context_object_name = 'subtopic'
     template_name = 'learning/subrecord_list.html'
 
+    def test_func(self):
+        obj = self.get_object()
+        user = self.request.user
+        if obj.access_level == 1:
+            return user.groups.filter(name=group).exists() or user.is_superuser
+        elif obj.access_level == 2:
+            return obj.author == user or user.is_superuser
+        else:
+            return True
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['subrecord_list'] = self.object.subrecord_set.all
+        user = self.request.user
+        if user.is_authenticated:
+            if user.groups.filter(name=group).exists():
+                context['subrecord_list'] = self.object.subrecord_set.filter(Q(access_level=0) | Q(access_level=1) | Q(author=user))
+            else:
+                context['subrecord_list'] = self.object.subrecord_set.filter(Q(access_level=0) | Q(author=user))
+            if user.is_superuser:
+                context['subrecord_list'] = self.object.subrecord_set.all()
+        else:
+            context['subrecord_list'] = self.object.subrecord_set.filter(Q(access_level=0))
+
         return context
 
 
-class SubRecordDetailView(DetailView):
+class SubRecordDetailView(UserPassesTestMixin, DetailView):
     model = SubRecord
     context_object_name = 'subrecord'
     template_name = 'learning/subrecord_detail.html'
+
+    def test_func(self):
+        obj = self.get_object()
+        if obj.access_level == 1:
+            return self.request.user.groups.filter(name=group).exists() or self.request.user.is_superuser
+        elif obj.access_level == 2:
+            return obj.author == self.request.user or self.user.is_superuser
+        else:
+            return True
 
 
 class SubRecordUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
