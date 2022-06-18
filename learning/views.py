@@ -89,7 +89,6 @@ class RecordListView(UserPassesTestMixin, DetailView):  # TopicDetailView
         else:
             return True
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
@@ -127,7 +126,7 @@ class RecordDetailView(UserPassesTestMixin, DetailView):
             return True
 
 
-class RecordUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class RecordUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView): # Если access_level = 2?
     model = Record
     fields = ('title', 'preview', 'text', 'access_level', 'image', 'document')
     template_name = 'learning/record_update.html'
@@ -139,7 +138,7 @@ class RecordUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return obj.author == self.request.user or self.request.user.groups.filter(name=group).exists()
 
 
-class RecordDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class RecordDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):  # Если access_level = 2?
     """Удаляет определенную запись"""
     model = Record
     template_name = 'learning/record_delete.html'
@@ -247,7 +246,7 @@ class SubRecordDetailView(UserPassesTestMixin, DetailView):
         if obj.access_level == 1:
             return self.request.user.groups.filter(name=group).exists() or self.request.user.is_superuser
         elif obj.access_level == 2:
-            return obj.author == self.request.user or self.user.is_superuser
+            return obj.author == self.request.user or self.request.user.is_superuser
         else:
             return True
 

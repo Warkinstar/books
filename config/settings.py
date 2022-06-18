@@ -148,9 +148,9 @@ STATICFILES_FINDERS = [
 #MEDIA_ROOT = str(BASE_DIR.joinpath('media'))  # for local
 
 GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    os.path.join(BASE_DIR, 'sixth-module-346216-011f4d6f053f.json'))
+    os.path.join(BASE_DIR, 'sixth-module-346216-64e78cad37cc.json'))
 DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
-GS_BUCKET_NAME = 'django-basket'
+GS_BUCKET_NAME = 'django-basket-eu'
 GS_FILE_OVERWRITE = False
 
 
