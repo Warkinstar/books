@@ -4,22 +4,47 @@
 {% block title %}{{ record }}{% endblock title %}
 
 {% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <p><i class="bi bi-tag"></i> Категория: <a href="{% url 'topic' record.topic_id %}">{{ record.topic }}</a></p>
+            </div>
+            <div class="col-md-3">
+                <a><i class="bi bi-calendar-date"></i> Дата: {{ record.date_added }}</a>
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+                {% if request.user|has_group:'teachers' or record.author == request.user %}
+                    <a href="{% url 'record_update' record.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
+                    <a href="{% url 'record_delete' record.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <li><a href="{% url 'topic_list' %}" class="">Обучение</a></li>
+                <li><a href="{% url 'topic' record.topic_id  %}" class="">{{ record.topic }}</a></li>
+
+            </div>
+            <div class="col-md-9">
+                <h2><a href="">{{ record.title }}</a></h2>
+                {% if record.image %}
+                    <img class="bookcover" src="{{ record.image.url }}" alt="{{ record.title }}">
+                {% endif %}
+                <p>{{ record.text|safe }}</p>
+                {% if record.document %}
+                  <p><a href={{ record.document.url }}><i class="bi bi-download"></i> Скачать {{ record.document.size|filesizeformat }}</a></p>
+                {% endif %}
+                <p>{{ record.date_added }}</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
     <a href="{% url 'topic_list' %}" class="">Обучение</a> >
     <a href="{% url 'topic' record.topic_id  %}" class="">{{ record.topic }}</a> >
     <a href="{% url 'record' record.id %}" class="">{{ record }}</a>
-    <div class="book-detail">
-        {% if record.image %}
-            <img class="bookcover" src="{{ record.image.url }}" alt="{{ record.title }}">
-        {% endif %}
-        <h2><a href="">{{ record.title }}</a></h2>
-        {% if request.user|has_group:'teachers' or record.author == request.user %}
-            <a href="{% url 'record_update' record.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
-            <a href="{% url 'record_delete' record.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
-        {% endif %}
-        <p>{{ record.text|safe }}</p>
-        <p>{{ record.date_added }}</p>
-        {% if record.document %}
-            <p><a href={{ record.document.url }}>Скачать {{ record.document.size|filesizeformat }}</a></p>
-        {% endif %}
-    </div>
-{% endblock content %}

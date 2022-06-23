@@ -4,23 +4,50 @@
 {% block title %}{{ subrecord }}{% endblock title %}
 
 {% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <p><i class="bi bi-tag"></i> Категория: <a href="{% url 'subtopic' subrecord.subtopic_id %}" class="">{{ subrecord.subtopic }}</a></p>
+            </div>
+            <div class="col-md-3">
+                <p><a><i class="bi bi-calendar-date"></i> Дата: {{ subrecord.date_added }}</a></p>
+            </div>
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
+                {% if request.user|has_group:'teachers' or subrecord.author == request.user %}
+                    <a href="{% url 'subrecord_update' subrecord.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
+                    <a href="{% url 'subrecord_delete' subrecord.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <li><a href="{% url 'topic_list' %}" class="">Обучение</a></li>
+                <li><a href="{% url 'topic' subrecord.subtopic.topic_id  %}" class="">{{ subrecord.subtopic.topic }}</li>
+                <li><a href="{% url 'subtopic' subrecord.subtopic_id  %}" class="">{{ subrecord.subtopic }}</a></li>
+
+            </div>
+            <div class="col-md-9">
+                <h2><a href="">{{ subrecord.title }}</a></h2>
+                {% if subrecord.image %}
+                    <img class="bookcover" src="{{ subrecord.image.url }}" alt="{{ subrecord.title }}">
+                {% endif %}
+                <p>{{ subrecord.text|safe }}</p>
+                {% if subrecord.document %}
+                    <p><a href={{ subrecord.document.url }}><i class="bi bi-download"></i> Скачать {{ subrecord.document.size|filesizeformat }}</a></p>
+                {% endif %}
+                <p>{{ subrecord.date_added }}</p>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
     <a href="{% url 'topic_list' %}" class="">Обучение</a> >
     <a href="{% url 'topic' subrecord.subtopic.topic_id  %}" class="">{{ subrecord.subtopic.topic }}</a> >
     <a href="{% url 'subtopic' subrecord.subtopic_id  %}" class="">{{ subrecord.subtopic }}</a> >
     <a href="{% url 'subrecord' subrecord.id %}" class="">{{ subrecord }}</a>
-    <div class="book-detail">
-        {% if subrecord.image %}
-            <img class="bookcover" src="{{ subrecord.image.url }}" alt="{{ subrecord.title }}">
-        {% endif %}
-        <h2><a href="">{{ subrecord.title }}</a></h2>
-        {% if request.user|has_group:'teachers' or subrecord.author == request.user %}
-            <a href="{% url 'subrecord_update' subrecord.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
-            <a href="{% url 'subrecord_delete' subrecord.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
-        {% endif %}
-        <p>{{ subrecord.text|safe }}</p>
-        <p>{{ subrecord.date_added }}</p>
-        {% if subrecord.document %}
-            <p><a href={{ subrecord.document.url }}>Скачать {{ subrecord.document.size|filesizeformat }}</a></p>
-        {% endif %}
-    </div>
-{% endblock content %}
