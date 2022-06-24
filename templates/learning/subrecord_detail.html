@@ -8,12 +8,23 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                <p><i class="bi bi-tag"></i> Категория: <a href="{% url 'subtopic' subrecord.subtopic_id %}" class="">{{ subrecord.subtopic }}</a></p>
+                <p><i class="bi bi-tag-fill"></i> Категория: <a href="{% url 'subtopic' subrecord.subtopic_id %}" class="">{{ subrecord.subtopic }}</a></p>
             </div>
             <div class="col-md-3">
                 <p><a><i class="bi bi-calendar-date"></i> Дата: {{ subrecord.date_added }}</a></p>
             </div>
             <div class="col-md-3">
+                {% if request.user|has_group:'teachers' %}
+                    {% if subrecord.access_level == 1 %}
+                        <a><i class="bi bi-people-fill"></i> Доступ: Преподаватели </a>
+                    {% endif %}
+                    {% if subrecord.access_level == 2 %}
+                        <a><i class="bi bi-person-fill"></i> Доступ: Только я</a>
+                    {% endif %}
+                    {% if subrecord.access_level == 0 %}
+                        <a><i class="bi bi-people"></i> Доступ: Все</a>
+                    {% endif %}
+                {% endif %}
             </div>
             <div class="col-md-3">
                 {% if request.user|has_group:'teachers' or subrecord.author == request.user %}

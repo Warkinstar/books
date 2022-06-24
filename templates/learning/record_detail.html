@@ -8,12 +8,24 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                <p><i class="bi bi-tag"></i> Категория: <a href="{% url 'topic' record.topic_id %}">{{ record.topic }}</a></p>
+                <p><i class="bi bi-tag-fill"></i> Категория: <a href="{% url 'topic' record.topic_id %}">{{ record.topic }}</a></p>
             </div>
             <div class="col-md-3">
                 <a><i class="bi bi-calendar-date"></i> Дата: {{ record.date_added }}</a>
             </div>
             <div class="col-md-3">
+                {% if request.user|has_group:'teachers' %}
+                    {% if record.access_level == 1 %}
+                        <a><i class="bi bi-people-fill"></i> Доступ: Преподаватели </a>
+                    {% endif %}
+                    {% if record.access_level == 2 %}
+                        <a><i class="bi bi-person-fill"></i> Доступ: Только я</a>
+                    {% endif %}
+                    {% if record.access_level == 0 %}
+                        <a><i class="bi bi-people"></i> Доступ: Все</a>
+                    {% endif %}
+                {% endif %}
+
             </div>
             <div class="col-md-3">
                 {% if request.user|has_group:'teachers' or record.author == request.user %}
