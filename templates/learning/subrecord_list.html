@@ -6,6 +6,93 @@
 {% block title %}{{ subtopic }}{% endblock title %}
 
 {% block content %}
+
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <p><i class="bi bi-tag-fill"></i> Подтема: <a href="{{ subtopic.get_absolute_url }}">{{ subtopic.title }}</a></p>
+            </div>
+            <div class="col-md-3">
+                <a><i class="bi bi-calendar-date"></i> Дата: {{ subtopic.date_added|date:"d E Y" }}</a>
+            </div>
+            <div class="col-md-3">
+                {% if request.user|has_group:'teachers' %}
+                    {% if subtopic.access_level == 1 %}
+                        <a><i class="bi bi-people-fill"></i> Доступ: Преподаватели </a>
+                    {% endif %}
+                    {% if subtopic.access_level == 2 %}
+                        <a><i class="bi bi-person-fill"></i> Доступ: Только я</a>
+                    {% endif %}
+                    {% if subtopic.access_level == 0 %}
+                        <a><i class="bi bi-people"></i> Доступ: Все</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                {% if request.user|has_group:'teachers' %}
+                    <a href="{% url 'subrecord_new' pk=subtopic.pk  %}" class="btn btn-success btn-sm"><i class="bi bi-plus-circle-dotted"></i> Запись</a>
+                {% endif %}
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3">
+                <b>Навигация</b>
+                <li><a href="{% url 'home' %}" class="">Главная</a></li>
+                <li><a href="{% url 'topic_list' %}" class="">Обучение</a></li>
+                <li><a href="{% url 'topic' subtopic.topic_id %}" class="">{{ subtopic.topic }}</a></li>
+            </div>
+            <div class="col-md-9">
+                {% for subrecord in subrecord_list %}
+                    <div class="card mb-3" style="max-width: 1000px;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                {% if subrecord.image %}
+                                    <a href="{{ subrecord.get_absolute_url }}"><img class="bookcover" src="{{ subrecord.image.url }}" alt="{{ subrecord.title }}"/></a>
+                                {% else %}
+                                    <a href="{{ subrecord.get_absolute_url }}"><img class="bookcover" src="{% static 'images/no_image.png' %}" alt="{{ subrecord.title }}"/></a>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h5><a class="card-title" href="{{ subrecord.get_absolute_url }}">{{ subrecord.title }}</a></h5>
+                                        </div>
+                                        <div class="col-md-4">
+                                        {% if request.user|has_group:'teachers' %}
+                                            {% if subrecord.access_level == 1 %}
+                                                <a><i class="bi bi-people-fill"></i> Доступ: Преподаватели </a>
+                                            {% endif %}
+                                            {% if subrecord.access_level == 2 %}
+                                                <a><i class="bi bi-person-fill"></i> Доступ: Только я</a>
+                                            {% endif %}
+                                            {% if subrecord.access_level == 0 %}
+                                                <a><i class="bi bi-people"></i> Доступ: Все</a>
+                                            {% endif %}
+                                        {% endif %}
+                                        </div>
+                                    </div>
+                                    <p class="card-text">{{ subrecord.preview|safe }}</p>
+                                    {% if request.user|has_group:'teachers' or subrecord.author == request.user %}
+                                        <a href="{% url 'subrecord_update' subrecord.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
+                                        <a href="{% url 'subrecord_delete' subrecord.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
+                                    {% endif %}
+                                    <p class="card-text"><small class="text-muted">{{ subrecord.date_added }}</small></p>
+                                </div>
+                            </div>
+                      </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+
+
     <a href="{% url 'topic_list' %}" class="">Обучение</a> >
     <a href="{% url 'topic' subtopic.topic_id  %}" class="">{{ subtopic.topic }}</a> >
     <a href="{% url 'subtopic' subtopic.id %}" class="">{{ subtopic }}</a>
@@ -24,7 +111,25 @@
         </div>
         <div class="col-md-8">
           <div class="card-body">
-              <h5><a class="card-title" href="{{ subrecord.get_absolute_url }}">{{ subrecord.title }}</a></h5>
+              <div class="row">
+                  <div class="col-md-8">
+                       <h5><a class="card-title" href="{{ subrecord.get_absolute_url }}">{{ subrecord.title }}</a></h5>
+                  </div>
+                  <div class="col-md-4">
+                                      {% if request.user|has_group:'teachers' %}
+                    {% if subrecord.access_level == 1 %}
+                        <a><i class="bi bi-people-fill"></i> Доступ: Преподаватели </a>
+                    {% endif %}
+                    {% if subrecord.access_level == 2 %}
+                        <a><i class="bi bi-person-fill"></i> Доступ: Только я</a>
+                    {% endif %}
+                    {% if subrecord.access_level == 0 %}
+                        <a><i class="bi bi-people"></i> Доступ: Все</a>
+                    {% endif %}
+                {% endif %}
+                  </div>
+              </div>
+
               <p class="card-text">{{ subrecord.preview|safe }}</p>
               {% if request.user|has_group:'teachers' or subrecord.author == request.user %}
                 <a href="{% url 'subrecord_update' subrecord.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
@@ -36,4 +141,3 @@
       </div>
     </div>
     {% endfor %}
-{% endblock content %}

@@ -6,6 +6,95 @@
 {% block title %}{{ topic }}{% endblock title %}
 
 {% block content %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <p><i class="bi bi-tag-fill"></i> Тема: <a href="{{ topic.get_absolute_url }}">{{ topic.title }}</a></p>
+            </div>
+            <div class="col-md-3">
+                <a><i class="bi bi-calendar-date"></i> Дата: {{ topic.date_added|date:"d E Y" }}</a>
+            </div>
+            <div class="col-md-3">
+                {% if request.user|has_group:'teachers' %}
+                    {% if topic.access_level == 1 %}
+                        <a><i class="bi bi-people-fill"></i> Доступ: Преподаватели </a>
+                    {% endif %}
+                    {% if topic.access_level == 2 %}
+                        <a><i class="bi bi-person-fill"></i> Доступ: Только я</a>
+                    {% endif %}
+                    {% if topic.access_level == 0 %}
+                        <a><i class="bi bi-people"></i> Доступ: Все</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="col-md-3">
+                {% if request.user|has_group:'teachers' %}
+                    <a href="{% url 'subtopic_new' pk=topic.pk %}" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle-dotted"></i> Подтема</a>
+                    <a href="{% url 'record_new' pk=topic.pk  %}" class="btn btn-success btn-sm"><i class="bi bi-plus-circle-dotted"></i> Запись</a>
+                {% endif %}
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3">
+                <b>Навигация</b>
+                <li><a href="{% url 'home' %}" class="">Главная</a></li>
+                <li><a href="{% url 'topic_list' %}" class="">Обучение</a></li>
+                Подтемы:
+                {% for subtopic in subtopic_list %}
+                    <li><a href="{{ subtopic.get_absolute_url }}">{{ subtopic.title }}</a></li>
+                {% endfor %}
+            </div>
+            <div class="col-md-9">
+                {% for record in record_list %}
+                    <div class="card mb-3" style="max-width: 1000px;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                {% if record.image %}
+                                    <a href="{{ record.get_absolute_url }}"><img class="bookcover" src="{{ record.image.url }}" alt="{{ record.title }}"/></a>
+                                {% else %}
+                                    <a href="{{ record.get_absolute_url }}"><img class="bookcover" src="{% static 'images/no_image.png' %}" alt="{{ record.title }}"/></a>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h5><a class="card-title" href="{{ record.get_absolute_url }}">{{ record.title }}</a></h5>
+                                        </div>
+                                        <div class="col-md-4">
+                                        {% if request.user|has_group:'teachers' %}
+                                            {% if record.access_level == 1 %}
+                                                <a><i class="bi bi-people-fill"></i> Доступ: Преподаватели </a>
+                                            {% endif %}
+                                            {% if record.access_level == 2 %}
+                                                <a><i class="bi bi-person-fill"></i> Доступ: Только я</a>
+                                            {% endif %}
+                                            {% if record.access_level == 0 %}
+                                                <a><i class="bi bi-people"></i> Доступ: Все</a>
+                                            {% endif %}
+                                        {% endif %}
+                                        </div>
+                                    </div>
+                                    <p class="card-text">{{ record.preview|safe }}</p>
+                                    {% if request.user|has_group:'teachers' or record.author == request.user %}
+                                        <a href="{% url 'record_update' record.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
+                                        <a href="{% url 'record_delete' record.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
+                                    {% endif %}
+                                    <p class="card-text"><small class="text-muted">{{ record.date_added }}</small></p>
+                                </div>
+                            </div>
+                      </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
     <a href="{% url 'topic_list' %}" class="">Обучение</a> > <a href="{% url 'topic' topic.id %}" class="">{{ topic }}</a>
     {% if request.user|has_group:'teachers' %}
         <a href="{% url 'subtopic_new' pk=topic.pk %}" class="btn btn-primary btn-sm">Добавить подтему</a>
@@ -14,28 +103,3 @@
     {% for subtopic in subtopic_list %}
         <h2><a href="{{ subtopic.get_absolute_url }}">{{ subtopic.title }}</a></h2>
     {% endfor %}
-    {% for record in record_list %}
-     <div class="card mb-3" style="max-width: 1000px;">
-      <div class="row no-gutters">
-        <div class="col-md-4">
-            {% if record.image %}
-                <a href="{{ record.get_absolute_url }}"><img class="bookcover" src="{{ record.image.url }}" alt="{{ record.title }}"/></a>
-            {% else %}
-                <a href="{{ record.get_absolute_url }}"><img class="bookcover" src="{% static 'images/no_image.png' %}" alt="{{ record.title }}"/></a>
-            {% endif %}
-        </div>
-        <div class="col-md-8">
-            <div class="card-body">
-                <h5><a class="card-title" href="{{ record.get_absolute_url }}">{{ record.title }}</a></h5>
-                <p class="card-text">{{ record.preview|safe }}</p>
-                {% if request.user|has_group:'teachers' or record.author == request.user %}
-                    <a href="{% url 'record_update' record.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
-                    <a href="{% url 'record_delete' record.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
-                {% endif %}
-                <p class="card-text"><small class="text-muted">{{ record.date_added }}</small></p>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-{% endblock content %}
