@@ -10,6 +10,40 @@ from django.urls import reverse
 group = 'teachers'  # Используется для проверки состояния пользователя в группе
 
 
+def available_context(user, object):
+    """
+    Принимает экземпляр текущего пользователя(self.request.user) и объект (Topic).
+    Возвращает список экземпляров соответствующий уровню доступа пользователя.
+    """
+    if user.is_authenticated:
+        if user.groups.filter(name=group).exists():
+            content = object.objects.filter(Q(access_level=0) | Q(access_level=1) | Q(author=user))
+        else:
+            content = object.objects.filter(Q(access_level=0) | Q(author=user))
+        if user.is_superuser:
+            content = object.objects.all()
+    else:
+        content = object.objects.filter(Q(access_level=0))
+
+    return content
+
+def available_context_set(user, object_set):
+    """Принимает экземпляр текущего пользователя(self.request.user) и связанный объект(topic.record_set)
+       Возвращает список экземпляров соответствующий доступу пользователя.
+    """
+    if user.is_authenticated:
+        if user.groups.filter(name=group).exists():
+            content = object_set.filter(Q(access_level=0) | Q(access_level=1) | Q(author=user))
+        else:
+            content = object_set.filter(Q(access_level=0) | Q(author=user))
+        if user.is_superuser:
+            content = object_set.all()
+    else:
+        content = object_set.filter(Q(access_level=0))
+
+    return content
+
+
 class BookListView(ListView):
     model = Book
     context_object_name = 'book_list'
