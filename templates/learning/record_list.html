@@ -7,6 +7,7 @@
 
 {% block content %}
 
+    {# FOUR COLUMN IN THE TOP #}
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
@@ -36,17 +37,36 @@
             </div>
         </div>
 
-
+        {# SIDEBAR col-md-3 #}
         <div class="row">
             <div class="col-md-3">
-                <b>Навигация</b>
-                <li><a href="{% url 'home' %}" class="">Главная</a></li>
-                <li><a href="{% url 'topic_list' %}" class="">Обучение</a></li>
-                Подтемы:
-                {% for subtopic in subtopic_list %}
-                    <li><a href="{{ subtopic.get_absolute_url }}">{{ subtopic.title }}</a></li>
-                {% endfor %}
+                <div class="list-group">
+                    <a href="{% url 'home' %}" class="list-group-item list-group-item-action">Главная</a>
+                    <a href="{% url 'topic_list' %}" class="list-group-item list-group-item-action">Обучение</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">> Подтемы</a>
+                    <div class="collapse show" id="collapseExample">
+                        <div class="card card-body">
+                            {% for subtopic in subtopic_list %}
+                                {% if request.user|has_group:'teachers' %}
+                                    {% if subtopic.access_level == 1 %}
+                                        <li><a href="{{ subtopic.get_absolute_url }}" class="sidefont"><i class="bi bi-people-fill"></i> {{ subtopic }}</a></li>
+                                    {% endif %}
+                                    {% if subtopic.access_level == 2 %}
+                                        <li><a href="{{ subtopic.get_absolute_url }}" class="sidefont"><i class="bi bi-person-fill"></i> {{ subtopic }}</a></li>
+                                    {% endif %}
+                                    {% if subtopic.access_level == 0 %}
+                                        <li><a href="{{ subtopic.get_absolute_url }}" class="sidefont"><i class="bi bi-people"></i> {{ subtopic }}</a></li>
+                                    {% endif %}
+                                {% else %}
+                                    <li><a href="{{ subtopic.get_absolute_url }}" class="sidefont">{{ subtopic }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            {# MAIN CONTENT record_list col-md-9 #}
             <div class="col-md-9">
                 {% for record in record_list %}
                     <div class="card mb-3" style="max-width: 1000px;">
@@ -95,11 +115,3 @@
 
 {% endblock content %}
 
-    <a href="{% url 'topic_list' %}" class="">Обучение</a> > <a href="{% url 'topic' topic.id %}" class="">{{ topic }}</a>
-    {% if request.user|has_group:'teachers' %}
-        <a href="{% url 'subtopic_new' pk=topic.pk %}" class="btn btn-primary btn-sm">Добавить подтему</a>
-        <a href="{% url 'record_new' pk=topic.pk  %}" class="btn btn-secondary btn-sm">Добавить запись</a>
-    {% endif %}
-    {% for subtopic in subtopic_list %}
-        <h2><a href="{{ subtopic.get_absolute_url }}">{{ subtopic.title }}</a></h2>
-    {% endfor %}
