@@ -7,7 +7,8 @@
 
 {% block content %}
 
-<div class="container-fluid">
+    {# FOUR COLUMN IN THE TOP #}
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
                 <p><i class="bi bi-tag-fill"></i> Подтема: <a href="{{ subtopic.get_absolute_url }}">{{ subtopic.title }}</a></p>
@@ -35,14 +36,53 @@
             </div>
         </div>
 
-
+        {# SIDEBAR col-md-3 #}
         <div class="row">
             <div class="col-md-3">
-                <b>Навигация</b>
-                <li><a href="{% url 'home' %}" class="">Главная</a></li>
-                <li><a href="{% url 'topic_list' %}" class="">Обучение</a></li>
-                <li><a href="{% url 'topic' subtopic.topic_id %}" class="">{{ subtopic.topic }}</a></li>
+                <div class="list-group">
+                    <a href="{% url 'home' %}" class="list-group-item list-group-item-action">Главная</a>
+                    <a href="{% url 'topic_list' %}" class="list-group-item list-group-item-action">Обучение</a>
+                    <a href="{% url 'topic' subtopic.topic_id %}" class="list-group-item list-group-item-action">{{ subtopic.topic }}</a>
+                    <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">> Подтемы</a>
+                    <div class="collapse show" id="collapseExample">
+                        <div class="card card-body">
+                            {% for sb in subtopic_list %}
+                                {% if request.user|has_group:'teachers' %}
+                                    {% if sb.access_level == 1 %}
+                                        {% if subtopic == sb %}
+                                            <li><a href="{{ sb.get_absolute_url }}" class="sidefont"><i class="bi bi-people-fill"></i> <b>{{ sb }}</b></a></li>
+                                        {% else %}
+                                            <li><a href="{{ sb.get_absolute_url }}" class="sidefont"><i class="bi bi-people-fill"></i> {{ sb }}</a></li>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if sb.access_level == 2 %}
+                                        {% if subtopic == sb %}
+                                            <li><a href="{{ sb.get_absolute_url }}" class="sidefont"><i class="bi bi-person-fill"></i> <b>{{ sb }}</b></a></li>
+                                        {% else %}
+                                            <li><a href="{{ sb.get_absolute_url }}" class="sidefont"><i class="bi bi-person-fill"></i> {{ sb }}</a></li>
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if sb.access_level == 0 %}
+                                        {% if subtopic == sb %}
+                                            <li><a href="{{ sb.get_absolute_url }}" class="sidefont"><i class="bi bi-people"></i> <b>{{ sb }}</b></a></li>
+                                        {% else %}
+                                            <li><a href="{{ sb.get_absolute_url }}" class="sidefont"><i class="bi bi-people"></i> {{ sb }}</a></li>
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    {% if subtopic == sb %}
+                                        <li><a href="{{ sb.get_absolute_url }}" class="sidefont"> <b>{{ sb }}</b></a></li>
+                                    {% else %}
+                                        <li><a href="{{ sb.get_absolute_url }}" class="sidefont">{{ sb }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            {# MAIN CONTENT subrecord_list col-md-9 #}
             <div class="col-md-9">
                 {% for subrecord in subrecord_list %}
                     <div class="card mb-3" style="max-width: 1000px;">

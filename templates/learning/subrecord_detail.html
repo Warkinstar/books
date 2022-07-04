@@ -5,10 +5,11 @@
 
 {% block content %}
 
+    {# FOUR COLUMN IN THE TOP #}
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3">
-                <p><i class="bi bi-tag-fill"></i> Категория: <a href="{% url 'subtopic' subrecord.subtopic_id %}" class="">{{ subrecord.subtopic }}</a></p>
+                <p><i class="bi bi-tag-fill"></i> Подтема: <a href="{% url 'subtopic' subrecord.subtopic_id %}" class="">{{ subrecord.subtopic }}</a></p>
             </div>
             <div class="col-md-3">
                 <p><a><i class="bi bi-calendar-date"></i> Дата: {{ subrecord.date_added }}</a></p>
@@ -34,13 +35,28 @@
             </div>
         </div>
 
-        <div class="row">
+        {# SIDEBAR col-md-3 #}
+         <div class="row">
             <div class="col-md-3">
-                <li><a href="{% url 'topic_list' %}" class="">Обучение</a></li>
-                <li><a href="{% url 'topic' subrecord.subtopic.topic_id  %}" class="">{{ subrecord.subtopic.topic }}</li>
-                <li><a href="{% url 'subtopic' subrecord.subtopic_id  %}" class="">{{ subrecord.subtopic }}</a></li>
-
+                  <div class="list-group">
+                      <a href="{% url 'home' %}" class="list-group-item list-group-item-action"> Главная</a>
+                      <a href="{% url 'topic_list' %}" class="list-group-item list-group-item-action"> Обучение</a>
+                      <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">> {{ subrecord.subtopic }}</a>
+                      <div class="collapse show" id="collapseExample">
+                        <div class="card card-body">
+                            {% for r in subrecord_list %}
+                                {% if subrecord == r %}
+                                    <li><a href="{{ r.get_absulute_url }}" class="sidefont"> <b>{{ r }}</b> </a></li>
+                                {% else %}
+                                    <li><a href="{{ r.get_absolute_url }}" class="sidefont"> {{ r }} </a></li>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                  </div>
             </div>
+
+            {# MAIN CONTENT record_list col-md-9 #}
             <div class="col-md-9">
                 <h2><a href="">{{ subrecord.title }}</a></h2>
                 {% if subrecord.image %}
