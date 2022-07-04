@@ -4,4 +4,4 @@ from django.db import models
 
 class CustomUser(AbstractUser):
     """Можем дополнить различными полями"""
-    pass
+    middle_name = models.CharField(("Отчество"), max_length=150, blank=True)
