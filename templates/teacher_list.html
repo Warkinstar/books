@@ -1,0 +1,31 @@
+{% extends '_base.html' %}
+
+{% block title %}Учителя{% endblock title %}
+
+{% block content %}
+    <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Имя</th>
+      <th scope="col">Фамилия</th>
+      <th scope="col">Отчество</th>
+      <th scope="col">Email-адрес</th>
+      <th scope="col">Последний вход</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for teacher in teacher_list %}
+      <tr>
+        <th scope="row">{{ forloop.counter }}</th>
+        <td>{{ teacher.first_name }}</td>
+        <td>{{ teacher.last_name }} </td>
+        <td>{{ teacher.middle_name }}</td>
+        <td>{{ teacher.email }}</td>
+        <td>{{ teacher.last_login }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock content %}
