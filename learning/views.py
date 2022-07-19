@@ -141,9 +141,7 @@ class RecordDetailView(UserPassesTestMixin, DetailView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         obj = self.object  # self.get_object()
-        obj_meta = obj._meta.model  # Все записи Темы из текущего экземпляра
-        #context['record_list'] = available_context(user, obj._meta.model)
-        context['record_list'] = available_context(user, obj_meta)
+        context['record_list'] = available_context_set(user, obj.topic.record_set)
         context['topic_list'] = available_context(user, Topic)
         return context
 
@@ -199,7 +197,8 @@ class RecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
 
 ''' Переход на созданную страницу (не работает)
     def get_success_url(self):
-        return reverse('record', kwargs={'pk': self.obj.pk})
+        return reverse('record', kwargs={'pk': self.obj.pk})  
+        Может потому что объект obj объявлялся не как self.obj сверху
 '''
 
 
@@ -246,8 +245,7 @@ class SubRecordListView(UserPassesTestMixin, DetailView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         obj = self.object
-        obj_meta = obj._meta.model
-        context['subtopic_list'] = available_context(user, obj_meta)
+        context['subtopic_list'] = available_context_set(user, obj.topic.subtopic_set)
         context['subrecord_list'] = available_context_set(user, obj.subrecord_set)
         return context
 
@@ -270,8 +268,7 @@ class SubRecordDetailView(UserPassesTestMixin, DetailView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
         obj = self.object
-        obj_meta = obj._meta.model
-        context['subrecord_list'] = available_context(user, obj_meta)
+        context['subrecord_list'] = available_context_set(user, obj.subtopic.subrecord_set)
         return context
 
 
