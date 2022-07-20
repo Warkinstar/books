@@ -16,6 +16,7 @@ gunicorn = "*"
 django-storages = {extras = ["google"], version = "*"}
 easy-thumbnails = "*"
 django-tinymce = "*"
+djangorestframework = "~=3.13.0"
 
 [dev-packages]
 

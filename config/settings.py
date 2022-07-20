@@ -53,11 +53,13 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'easy_thumbnails',
     'tinymce',
+    "rest_framework",
 
     # Local
     'accounts',
     'pages',
     'learning',
+    "apis.apps.ApisConfig",
 ]
 
 MIDDLEWARE = [

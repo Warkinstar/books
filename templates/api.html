@@ -1,0 +1,44 @@
+{% extends '_base.html' %}
+
+{% block content %}
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Topics API</h5>
+            <p class="card-text">API - Тем.</p>
+            <a href="{% url 'topics_api' %}" class="btn btn-primary">Перейти</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">SubTopics API</h5>
+            <p class="card-text">API - Подтем.</p>
+            <a href="{% url 'subtopics_api' %}" class="btn btn-primary">Перейти</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Records API</h5>
+            <p class="card-text">API - Записей</p>
+            <a href="{% url 'records_api' %}" class="btn btn-primary">Перейти</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">SubRecords API</h5>
+            <p class="card-text">API - Записей Подтемы</p>
+            <a href="{% url 'subrecords_api' %}" class="btn btn-primary">Перейти</a>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}

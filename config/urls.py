@@ -28,6 +28,7 @@ urlpatterns = [
     # Local apps
     path('', include('pages.urls')),
     path('learning/', include('learning.urls')),
+    path("api/", include("apis.urls")),
 
     # tinymce editor
     path('tinymce/', include('tinymce.urls')),
