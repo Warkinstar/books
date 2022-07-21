@@ -29,6 +29,8 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('last_login', 'date_joined')
         }),
     )
+    add_fieldsets =  ((None, {'fields': (
+        'first_name', 'last_name', 'middle_name', 'email',)}),) + UserAdmin.add_fieldsets 
 
 
 admin.site.register(CustomUser, CustomUserAdmin)
