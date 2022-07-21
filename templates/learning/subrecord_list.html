@@ -89,9 +89,9 @@
                         <div class="row no-gutters">
                             <div class="col-md-4">
                                 {% if subrecord.image %}
-                                    <a href="{{ subrecord.get_absolute_url }}"><img class="bookcover" src="{{ subrecord.image.url }}" alt="{{ subrecord.title }}"/></a>
+                                    <a href="{{ subrecord.get_absolute_url }}"><img class="img-thumbnail" src="{{ subrecord.image.url }}" alt="{{ subrecord.title }}"/></a>
                                 {% else %}
-                                    <a href="{{ subrecord.get_absolute_url }}"><img class="bookcover" src="{% static 'images/no_image.png' %}" alt="{{ subrecord.title }}"/></a>
+                                    <a href="{{ subrecord.get_absolute_url }}"><img class="img-thumbnail" src="{% static 'images/no_image.png' %}" alt="{{ subrecord.title }}"/></a>
                                 {% endif %}
                             </div>
                             <div class="col-md-8">
