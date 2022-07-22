@@ -239,3 +239,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'menubar': True,
     'statusbar': True,
 }
+
+# TimeZone
+USE_TZ = True
+TIME_ZONE = "Asia/Almaty"
