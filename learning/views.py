@@ -184,22 +184,18 @@ class RecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
 
     def form_valid(self, form):
         """Привязка к теме и привязка к автору"""
-        obj = form.save(commit=False)
-        obj.topic_id = self.kwargs['pk']
-        obj.author = self.request.user
-        obj.save()
+        self.obj = form.save(commit=False)
+        self.obj.topic_id = self.kwargs['pk']
+        self.obj.author = self.request.user
+        self.obj.save()
         return super(RecordNewView, self).form_valid(form)
 
     def get_success_url(self):
-        """Переход на список записей и подзаписей темы"""
-        return reverse('topic', kwargs={'pk': self.kwargs['pk']})
-
-
-''' Переход на созданную страницу (не работает)
-    def get_success_url(self):
         return reverse('record', kwargs={'pk': self.obj.pk})  
-        Может потому что объект obj объявлялся не как self.obj сверху
-'''
+
+    ''' def get_success_url(self):
+        """Переход на список записей и подзаписей темы"""
+        return reverse('topic', kwargs={'pk': self.kwargs['pk']}) '''
 
 
 class SubTopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
@@ -311,14 +307,17 @@ class SubRecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
 
     def form_valid(self, form):
         """Привязка записи к подтеме и к автору"""
-        obj = form.save(commit=False)
-        obj.subtopic_id = self.kwargs['pk']
-        obj.author = self.request.user
-        obj.save()
+        self.obj = form.save(commit=False)
+        self.obj.subtopic_id = self.kwargs['pk']
+        self.obj.author = self.request.user
+        self.obj.save()
         return super(SubRecordNewView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('subtopic', kwargs={'pk': self.kwargs['pk']})
+        return reverse('subrecord', kwargs={'pk': self.obj.pk})
+
+    ''' def get_success_url(self):
+        return reverse('subtopic', kwargs={'pk': self.kwargs['pk']}) '''
 
 
 class SearchResultsListView(ListView):  # Полнотекстный поиск нужен ли?
