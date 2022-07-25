@@ -24,11 +24,15 @@ h1 {
 
 /* Боковой скролл в collapse в SideBar */
 .collapse {
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 350px;
 }
 
-
+.list-group {
+    position: sticky;
+    top: 0;
+    padding-top: 10px;
+}
 
 /* Для прилипания футера к низу */
 .Site {
