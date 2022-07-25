@@ -41,7 +41,8 @@
                   <div class="list-group">
                       <a href="{% url 'home' %}" class="list-group-item list-group-item-action"> Главная</a>
                       <a href="{% url 'topic_list' %}" class="list-group-item list-group-item-action"> Обучение</a>
-                      <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">> {{ record.topic }}</a>
+                      <a href="{% url 'topic' record.topic_id %}" class="list-group-item list-group-item-action"> {{ record.topic }} </a>
+                      <a class="list-group-item list-group-item-action" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">> По этой теме </a>
                       <div class="collapse show" id="collapseExample">
                         <div class="card card-body">
                             {% for r in record_list %}
