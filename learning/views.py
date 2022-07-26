@@ -326,12 +326,18 @@ class SearchResultsListView(ListView):  # Полнотекстный поиск 
     template_name = 'learning/search_results.html'
 
     def get_context_data(self, **kwargs):
+        user = self.request.user
         query = self.request.GET.get('q')
         context = super().get_context_data(**kwargs)
-        context['topic_list'] = Topic.objects.filter(Q(title__icontains=query))
-        context['record_list'] = Record.objects.filter(
+
+        context['topic_list'] = available_context(user, Topic).filter(Q(title__icontains=query))
+
+        context['record_list'] = available_context(user, Record).filter(
             Q(title__icontains=query) | Q(preview__icontains=query) | Q(text__icontains=query))
-        context['subtopic_list'] = SubTopic.objects.filter(Q(title__icontains=query))
-        context['subrecord_list'] = SubRecord.objects.filter(
+
+        context['subtopic_list'] = available_context(user, SubTopic).filter(Q(title__icontains=query))
+
+        context['subrecord_list'] = available_context(user, SubRecord).filter(
             Q(title__icontains=query) | Q(preview__icontains=query) | Q(text__icontains=query))
+
         return context
