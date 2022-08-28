@@ -5,3 +5,4 @@ db.sqlite3
 *.pdf
 *.docx
 *.jpg
+.venv/
