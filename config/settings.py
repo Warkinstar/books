@@ -60,6 +60,9 @@ INSTALLED_APPS = [
     'pages',
     'learning',
     "apis.apps.ApisConfig",
+
+    # third-party django-cleanup
+    "django_cleanup.apps.CleanupConfig",
 ]
 
 MIDDLEWARE = [

@@ -164,27 +164,3 @@ class SubRecord(models.Model):
 
     def get_absolute_url(self):
         return reverse('subrecord', args=[str(self.id)])
-
-
-@receiver(models.signals.post_delete, sender=Book)
-@receiver(models.signals.post_delete, sender=Record)
-@receiver(models.signals.post_delete, sender=SubRecord)
-def auto_delete_document(sender, instance, **kargs):
-    file = instance.document
-    try:
-        file.storage.delete(name=file.name)
-    except:
-        print('nothing')
-
-
-@receiver(models.signals.post_delete, sender=Book)
-@receiver(models.signals.post_delete, sender=Topic)
-@receiver(models.signals.post_delete, sender=SubTopic)
-@receiver(models.signals.post_delete, sender=Record)
-@receiver(models.signals.post_delete, sender=SubRecord)
-def auto_delete_image(sender, instance, **kargs):
-    file = instance.image
-    try:
-        file.storage.delete(name=file.name)
-    except:
-        print('nothing')
