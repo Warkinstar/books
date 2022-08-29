@@ -1,5 +1,5 @@
 import uuid
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.dispatch import receiver
@@ -48,7 +48,7 @@ class Review(models.Model):
     )
     review = models.CharField(max_length=255)
     author = models.ForeignKey(
-        get_user_model(),
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
 
@@ -68,7 +68,7 @@ class Topic(models.Model):
     image = models.ImageField('Изображение', upload_to='images/topics', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
-        get_user_model(),
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
 
@@ -97,7 +97,7 @@ class SubTopic(models.Model):
     image = models.ImageField('Изображение', upload_to='images/subtopics', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
-        get_user_model(),
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
 
@@ -125,7 +125,7 @@ class Record(models.Model):
     document = models.FileField('Документ', upload_to='documents/records', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
-        get_user_model(),
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
 
@@ -154,7 +154,7 @@ class SubRecord(models.Model):
     document = models.FileField('Документ', upload_to='documents/subrecords', blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
-        get_user_model(),
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
     )
 
