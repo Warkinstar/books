@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'tinymce',
     "rest_framework",
+    "corsheaders",
 
     # Local
     'accounts',
@@ -67,6 +68,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -246,3 +248,12 @@ TINYMCE_DEFAULT_CONFIG = {
 # TimeZone
 USE_TZ = True
 TIME_ZONE = "Asia/Almaty"
+
+# Rest Framework
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]  # domains which will have access to API
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",  # Только авторизованные пользователи
+    ],
+}

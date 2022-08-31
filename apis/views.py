@@ -3,6 +3,11 @@ from rest_framework import generics
 from django.views.generic import TemplateView
 from learning.models import Topic, SubTopic, Record, SubRecord
 
+"""
+generics.ListCreateAPIView  # Список и Создание
+generics.RetrieveUpdateDestroyAPIView  # Detail и UpdateDestroy
+"""
+
 
 class ApiPageView(TemplateView):
     template_name = "api.html"
