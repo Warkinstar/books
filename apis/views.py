@@ -1,5 +1,5 @@
 from .serializers import TopicSerializer, SubTopicSerializer, RecordSerializer, SubRecordSerializer
-from rest_framework import generics
+from rest_framework import generics, permissions
 from django.views.generic import TemplateView
 from learning.models import Topic, SubTopic, Record, SubRecord
 

@@ -50,11 +50,15 @@ INSTALLED_APPS = [
     'crispy_forms',
     'allauth',
     'allauth.account',
+    "allauth.socialaccount",
     'debug_toolbar',
     'easy_thumbnails',
     'tinymce',
     "rest_framework",
     "corsheaders",
+    "rest_framework.authtoken",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
 
     # Local
     'accounts',
@@ -92,6 +96,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "django.template.context_processors.request",  # For django-allauth
             ],
         },
     },
@@ -255,5 +260,9 @@ CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]  # domains which will have acce
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",  # Только авторизованные пользователи
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",  # Генерация токенов
     ],
 }

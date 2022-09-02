@@ -29,6 +29,9 @@ urlpatterns = [
     path('', include('pages.urls')),
     path('learning/', include('learning.urls')),
     path("api/v1/", include("apis.urls")),
+    path("api-auth/", include("rest_framework.urls")),  # Login Logout
+    path("api/v1/dj-rest-auth/", include("dj_rest_auth.urls")),  # Аутентификация
+    path("api/v1/dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),  # Регистрация
 
     # tinymce editor
     path('tinymce/', include('tinymce.urls')),
