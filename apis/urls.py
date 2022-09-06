@@ -1,5 +1,12 @@
 from django.urls import path
-from .views import TopicList, SubTopicList, RecordList, SubRecordList, ApiPageView
+from .views import (
+    TopicList,
+    SubTopicList,
+    RecordList,
+    SubRecordList,
+    ApiPageView,
+    UserList,
+)
 
 
 urlpatterns = [
@@ -8,4 +15,5 @@ urlpatterns = [
     path("subtopics/", SubTopicList.as_view(), name="subtopics_api"),
     path("records/", RecordList.as_view(), name="records_api"),
     path("subrecords/", SubRecordList.as_view(), name="subrecords_api"),
+    path("users/", UserList.as_view(), name="users_api"),
 ]

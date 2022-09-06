@@ -1,7 +1,14 @@
-from .serializers import TopicSerializer, SubTopicSerializer, RecordSerializer, SubRecordSerializer
+from .serializers import (
+    TopicSerializer,
+    SubTopicSerializer,
+    RecordSerializer,
+    SubRecordSerializer,
+    UserSerializer,
+)
 from rest_framework import generics, permissions
 from django.views.generic import TemplateView
 from learning.models import Topic, SubTopic, Record, SubRecord
+from django.contrib.auth import get_user_model
 
 """
 generics.ListCreateAPIView  # Список и Создание
@@ -30,4 +37,9 @@ class RecordList(generics.ListAPIView):
 class SubRecordList(generics.ListAPIView):
     queryset = SubRecord.objects.all()
     serializer_class = SubRecordSerializer
+
+
+class UserList(generics.ListAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = UserSerializer
 
