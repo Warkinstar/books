@@ -16,7 +16,7 @@ class HomepageTests(SimpleTestCase):
         self.assertTemplateUsed(self.response, 'home.html')
 
     def test_homepage_contains_correct_html(self):
-        self.assertContains(self.response, 'Homepage')
+        self.assertContains(self.response, 'Для студентов.')
 
     def test_homepage_does_not_contain_incorrect_html(self):
         self.assertNotContains(self.response, 'Hi there! I should not be on the page')
@@ -42,7 +42,7 @@ class AboutPageTests(SimpleTestCase):
         self.assertTemplateUsed(self.response, 'about.html')
 
     def test_aboutpage_contains_correct_html(self):
-        self.assertContains(self.response, 'О нас')
+        self.assertContains(self.response, 'ФАКУЛЬТЕТ ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ')
 
     def test_aboutpage_does_not_contain_incorrect_html(self):
         self.assertNotContains(self.response, 'Hi there! I should not be on the page.')
