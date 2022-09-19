@@ -6,46 +6,59 @@
 
 {% block content %}
 
-  <a href="{% url 'topic_list' %}"><img class="" src="{% static 'images/mainpage.png' %}" alt=""/></a>
+<!--Card title-->
+<div class="card mb-3">
+  <img class="card-img-top" src="{% static 'images/mainpage.png' %}" alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">ФАКУЛЬТЕТ ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ
+      КАФЕДРА «ПРИКЛАДНАЯ ИНФОРМАТИКА И ПРОГРАММИРОВАНИЕ»</h5>
+    <p class="card-text">Миссия - подготовка конкурентоспособных, инновационно - мыслящих и патриотический воспитанных
+      специалистов, соответствующих современным отечественным и международным критериям, системное построение и развитие
+      учебно-воспитательного процесса и его материальной базы, направленных на подготовку профессионально-компетентных
+      специалистов на уровне мировых стандартов.</p>
+    <p class="card-text"><small class="text-muted"></small></p>
+  </div>
+</div>
 
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Dulaty University</h5>
-            <p class="card-text">Web-сайт университета.</p>
-            <a href="https://dulaty.kz/ru" class="btn btn-primary" target="_blank">Перейти</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">STUDENT PORTAL</h5>
-            <p class="card-text">Для студентов.</p>
-            <a href="http://portal.dulaty.kz/" class="btn btn-primary" target="_blank">Перейти</a>
-          </div>
-        </div>
+<!--Cards-->
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Dulaty University</h5>
+        <p class="card-text">Web-сайт университета.</p>
+        <a href="https://dulaty.kz/ru" class="btn btn-primary" target="_blank">Перейти</a>
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">WEB TEACHER</h5>
-            <p class="card-text">Для преподователей.</p>
-            <a href="http://teacher.dulaty.kz/" class="btn btn-primary" target="_blank">Перейти</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Оценка преподователей</h5>
-            <p class="card-text">Комплексная оценка деятельности преподователя.</p>
-            <a href="http://dap.dulaty.kz/" class="btn btn-primary" target="_blank">Перейти</a>
-          </div>
-        </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">STUDENT PORTAL</h5>
+        <p class="card-text">Для студентов.</p>
+        <a href="http://portal.dulaty.kz/" class="btn btn-primary" target="_blank">Перейти</a>
       </div>
     </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">WEB TEACHER</h5>
+        <p class="card-text">Для преподователей.</p>
+        <a href="http://teacher.dulaty.kz/" class="btn btn-primary" target="_blank">Перейти</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Оценка преподователей</h5>
+        <p class="card-text">Комплексная оценка деятельности преподователя.</p>
+        <a href="http://dap.dulaty.kz/" class="btn btn-primary" target="_blank">Перейти</a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock content %}
