@@ -30,6 +30,7 @@
             <div class="col-md-3">
                 {% if request.user|has_group:'teachers' or record.author == request.user %}
                     <a href="{% url 'record_update' record.pk %}" class="badge badge-primary"><i class="bi bi-gear"></i>  Редактировать</a>
+                    <a href="{% url 'record_files' record.pk %}" class="badge badge-primary"><i class="bi bi-filetype-docx"></i>  Добавить документы</a>
                     <a href="{% url 'record_delete' record.pk %}" class="badge badge-danger"><i class="bi bi-trash3"></i>  Удалить</a>
                 {% endif %}
             </div>
@@ -64,10 +65,44 @@
                     <img class="bookcover" src="{{ record.image.url }}" alt="{{ record.title }}">
                 {% endif %}
                 <p>{{ record.text|safe }}</p>
+
+                {# Documents #}
                 {% if record.document %}
-                  <p><a href={{ record.document.url }}><i class="bi bi-download"></i> Скачать {{ record.document.size|filesizeformat }}</a></p>
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto pr-0">
+                          <i class="bi bi-file-earmark-text h2 text-muted mb-0"></i>
+                        </div>
+                        <div class="col">
+                          <h5 class="card-title mb-1">{{ record.document.name }}</h5>
+                          <p class="card-text mb-0"><small class="text-muted">{{ record.document.size|filesizeformat }}</small></p>
+                          <p class="card-text mb-0"><small class="text-muted">{{ record.document.created }}</small></p>
+                          <a href="{{ record.document.url }}" class="btn btn-sm btn-primary mt-2"><i class="bi bi-download"></i> Скачать</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 {% endif %}
-                <p>{{ record.date_added }}</p>
+
+                {% for f in record.files.all %}
+                  <div class="card mt-3">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto pr-0">
+                          <i class="bi bi-file-earmark h2 text-muted mb-0"></i>
+                        </div>
+                        <div class="col">
+                          <h5 class="card-title mb-1">{{ f.title }}</h5>
+                          <p class="card-text mb-0"><small class="text-muted">{{ f.file.size|filesizeformat }}</small></p>
+                          <p class="card-text mb-0"><small class="text-muted">{{ f.created }}</small></p>
+                          <a href="{{ f.file.url }}" class="btn btn-sm btn-primary mt-2"><i class="bi bi-download"></i> Скачать</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+
             </div>
         </div>
     </div>

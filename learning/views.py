@@ -5,11 +5,15 @@ from django.contrib.auth.mixins import (
     UserPassesTestMixin,
 )
 from django.views.generic import TemplateView, FormView
+from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView
-from .models import Book, Topic, Record, SubTopic, SubRecord
+from .models import Book, Topic, Record, SubTopic, SubRecord, RecordFile, SubRecordFile
 from .forms import BookForm, TopicForm, RecordForm, SubTopicForm, SubRecordForm
 from django.urls import reverse_lazy
 from django.urls import reverse
+from django.forms.models import inlineformset_factory
+from django.shortcuts import get_object_or_404, redirect
+
 
 group = "teachers"  # Используется для проверки состояния пользователя в группе
 
@@ -230,6 +234,38 @@ class RecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
         """Переход на список записей и подзаписей темы"""
         return reverse('topic', kwargs={'pk': self.kwargs['pk']}) '''
 
+
+class RecordFileCreateView(
+    LoginRequiredMixin, TemplateResponseMixin, View
+):
+    """Добавляет документ-файл к записи"""
+
+    template_name = "learning/record_file_formset.html"
+
+    def get_formset(self, data=None, files=None):
+        RecordFileFormset = inlineformset_factory(
+            Record,
+            RecordFile,
+            fields=["title", "file"],
+            extra=2,
+            can_delete=True,
+        )
+        return RecordFileFormset(instance=self.record, data=data, files=files)
+
+    def dispatch(self, request, pk):
+        self.record = get_object_or_404(Record, pk=pk, author=request.user)
+        return super().dispatch(request, pk)
+
+    def get(self, request, *args, **kwargs):
+        formset = self.get_formset()
+        return self.render_to_response({"record": self.record, "formset": formset})
+
+    def post(self, request, *args, **kwargs):
+        formset = self.get_formset(data=request.POST, files=request.FILES)
+        if formset.is_valid():
+            formset.save()
+            return redirect(reverse_lazy("record", kwargs={"pk": self.record.id}))
+        return self.render_to_response({"record": self.record, "formset": formset})
 
 class SubTopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     template_name = "learning/subtopic_new.html"
