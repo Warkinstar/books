@@ -1,0 +1,42 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+  Файлы для {{ subrecord.title }}
+{% endblock title %}
+
+{% block content %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ subrecord.subtopic.get_absolute_url }}">{{ subrecord.subtopic }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ subrecord.get_absolute_url }}"> {{ subrecord.title }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page"> Добавление документов</li>
+  </ol>
+</nav>
+
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Тема: {{ subrecord.subtopic.topic }}</h5>
+    <h5 class="card-title">Подтема: {{ subrecord.subtopic }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Запись: {{ subrecord.title }}</h6>
+    <p class="card-text">Дата добавления записи: {{ subrecord.date_added }}</p>
+  </div>
+</div>
+
+<div class="card mt-3">
+  <div class="card-header">
+    Добавление документов
+  </div>
+  <div class="card-body">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ formset|crispy }}
+
+      <button class="btn btn-primary" type="submit">
+        <i class="bi bi-cloud-upload"></i> Добавить файлы
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock content %}
