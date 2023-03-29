@@ -402,6 +402,39 @@ class SubRecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
         return reverse('subtopic', kwargs={'pk': self.kwargs['pk']}) """
 
 
+class SubRecordFileCreateView(
+    LoginRequiredMixin, TemplateResponseMixin, View
+):
+    """Добавляет документ-файл к записи"""
+
+    template_name = "learning/subrecord_file_formset.html"
+
+    def get_formset(self, data=None, files=None):
+        SubRecordFileFormset = inlineformset_factory(
+            SubRecord,
+            SubRecordFile,
+            fields=["title", "file"],
+            extra=2,
+            can_delete=True,
+        )
+        return SubRecordFileFormset(instance=self.subrecord, data=data, files=files)
+
+    def dispatch(self, request, pk):
+        self.subrecord = get_object_or_404(SubRecord, pk=pk, author=request.user)
+        return super().dispatch(request, pk)
+
+    def get(self, request, *args, **kwargs):
+        formset = self.get_formset()
+        return self.render_to_response({"subrecord": self.subrecord, "formset": formset})
+
+    def post(self, request, *args, **kwargs):
+        formset = self.get_formset(data=request.POST, files=request.FILES)
+        if formset.is_valid():
+            formset.save()
+            return redirect(reverse_lazy("subrecord", kwargs={"pk": self.subrecord.id}))
+        return self.render_to_response({"subrecord": self.subrecord, "formset": formset})
+
+
 class SearchResultsListView(ListView):  # Полнотекстный поиск нужен ли?
     """Поиск по Темам, Записям, ПодТемам, ПодЗаписям"""
 

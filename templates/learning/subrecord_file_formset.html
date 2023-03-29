@@ -2,23 +2,25 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-  Файлы для {{ record.title }}
+  Файлы для {{ subrecord.title }}
 {% endblock title %}
 
 {% block content %}
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ record.topic.get_absolute_url }}">{{ record.topic }}</a></li>
-    <li class="breadcrumb-item"><a href="{{ record.get_absolute_url }}"> {{ record.title }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ subrecord.subtopic.get_absolute_url }}">{{ subrecord.subtopic }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ subrecord.get_absolute_url }}"> {{ subrecord.title }}</a></li>
     <li class="breadcrumb-item active" aria-current="page"> Добавление документов</li>
   </ol>
 </nav>
 
+
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Тема: {{ record.topic }}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">Запись: {{ record.title }}</h6>
-    <p class="card-text">Дата добавления записи: {{ record.date_added }}</p>
+    <h5 class="card-title">Тема: {{ subrecord.subtopic.topic }}</h5>
+    <h5 class="card-title">Подтема: {{ subrecord.subtopic }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Запись: {{ subrecord.title }}</h6>
+    <p class="card-text">Дата добавления записи: {{ subrecord.date_added }}</p>
   </div>
 </div>
 

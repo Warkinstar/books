@@ -5,7 +5,7 @@ from .views import TopicListView, RecordListView, RecordDetailView
 from .views import TopicNewView, RecordNewView, RecordUpdateView, RecordDeleteView
 from .views import SubRecordListView, SubRecordDetailView, SubRecordUpdateView, SubRecordDeleteView
 from .views import SubTopicNewView, SubRecordNewView
-from .views import RecordFileCreateView
+from .views import RecordFileCreateView, SubRecordFileCreateView
 
 
 urlpatterns = [
@@ -27,7 +27,7 @@ urlpatterns = [
     path('topic/subtopic-<uuid:pk>/', SubRecordListView.as_view(), name = 'subtopic'),  # Список подзаписей (записей подТемы)
     path('topic/<uuid:pk>/subtopic-new/', SubTopicNewView.as_view(), name='subtopic_new'),  # Новая подТема опред-й темы (pk)
     path('topic/subtopic/subrecord-<uuid:pk>/', SubRecordDetailView.as_view(), name='subrecord'),  #  Личная страница записи подТемы
-    # path('topic/subtopic/subrecord-<uuid:pk>/files/', SubRecordDetailView.as_view(), name='subrecord_files'),  # Файлы подЗаписи
+    path('topic/subtopic/subrecord-<uuid:pk>/files/', SubRecordFileCreateView.as_view(), name='subrecord_files'),  # Файлы подЗаписи
     path('topic/subtopic/subrecord-<uuid:pk>/update', SubRecordUpdateView.as_view(), name='subrecord_update'), # Страница редактирования подзаписи
     path('topic/subtopic/subrecord-<uuid:pk>/delete', SubRecordDeleteView.as_view(), name='subrecord_delete'), # Страница удаления подзаписи
     path('topic/subtopic-<uuid:pk>/subrecord-new/', SubRecordNewView.as_view(), name='subrecord_new'),  # Добавление записи подТемы
