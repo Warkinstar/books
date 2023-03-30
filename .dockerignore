@@ -1,0 +1,12 @@
+.git/
+*.sqlite3
+.env
+docker-compose-prod.yml
+__pycache__/
+.vscode/
+.idea/
+db.sqlite3
+*.pdf
+*.docx
+*.jpg
+.venv/

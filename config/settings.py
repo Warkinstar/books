@@ -31,7 +31,7 @@ SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
-ALLOWED_HOSTS = ['.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', "dp-info.fly.dev"]
 
 
 # Application definition
@@ -206,9 +206,9 @@ ACCOUNT_FORMS = {
 DEFAULT_FROM_EMAIL = 'admin@department.com'
 
 # django-debug-toolbar
-import socket
-hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-INTERNAL_IPS = [ip[:-1] + '1' for ip in ips]
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # settings for deployment
 SECURE_SSL_REDIRECT = env.bool("DJANGO_SECURE_SSL_REDIRECT", default=True)
@@ -256,7 +256,7 @@ USE_TZ = True
 TIME_ZONE = "Asia/Almaty"
 
 # Rest Framework
-CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]  # domains which will have access to API
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000", "https://dp-info.fly.dev"]   # domains which will have access to API
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [

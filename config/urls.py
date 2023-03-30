@@ -43,7 +43,6 @@ urlpatterns = [
     path("api/schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
     path("api/schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
 
-
     # tinymce editor
     path('tinymce/', include('tinymce.urls')),
 ]
