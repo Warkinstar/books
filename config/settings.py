@@ -159,7 +159,7 @@ if DEBUG:
 else:
     # Google storage
     GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
-        os.path.join(BASE_DIR, "sixth-module-346216-64e78cad37cc.json")
+        os.path.join(BASE_DIR, "sixth-module-346216-83f0fb62a7b0.json")
     )
     DEFAULT_FILE_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
     GS_BUCKET_NAME = "django-basket-eu"

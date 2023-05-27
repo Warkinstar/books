@@ -2,6 +2,8 @@
 *.sqlite3
 .env
 docker-compose-prod.yml
+docker-compose.yml
+heroku.yml
 __pycache__/
 .vscode/
 .idea/
