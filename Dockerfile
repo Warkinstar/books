@@ -1,17 +1,25 @@
-# Pull base image
-FROM python:3.10.4-slim-bullseye
+ARG PYTHON_VERSION=3.10-slim-buster
 
-# Set environment variables
-ENV PIP_DISABLE_PIP_VERSION_CHECK 1
+FROM python:${PYTHON_VERSION}
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Set work directory
+RUN mkdir -p /code
+
 WORKDIR /code
 
-# Install dependencies
-COPY ./requirements.txt .
-RUN pip install -r requirements.txt
+COPY requirements.txt /tmp/requirements.txt
 
-# Copy project
-COPY . .
+RUN set -ex && \
+    pip install --upgrade pip && \
+    pip install -r /tmp/requirements.txt && \
+    rm -rf /root/.cache/
+
+COPY . /code/
+
+
+EXPOSE 8000
+
+# replace demo.wsgi with <project_name>.wsgi
+CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "config.wsgi"]

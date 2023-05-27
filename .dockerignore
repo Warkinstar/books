@@ -1,3 +1,6 @@
+.git/
+*.sqlite3
+.env
 docker-compose-prod.yml
 __pycache__/
 .vscode/
@@ -7,4 +10,3 @@ db.sqlite3
 *.docx
 *.jpg
 .venv/
-staticfiles/
