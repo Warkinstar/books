@@ -25,29 +25,38 @@ from drf_spectacular.views import (
 
 urlpatterns = [
     # Django admin
-    path('not-admin/', admin.site.urls),
-
+    path("not-admin/", admin.site.urls),
     # User management
-    path('accounts/', include('allauth.urls')),
-
+    path("accounts/", include("allauth.urls")),
     # Local apps
-    path('', include('pages.urls')),
-    path('learning/', include('learning.urls')),
-
+    path("", include("pages.urls")),
+    path("learning/", include("learning.urls")),
     # API
     path("api/v1/", include("apis.urls")),
     path("api-auth/", include("rest_framework.urls")),  # Login Logout
     path("api/v1/dj-rest-auth/", include("dj_rest_auth.urls")),  # Аутентификация
-    path("api/v1/dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")),  # Регистрация
+    path(
+        "api/v1/dj-rest-auth/registration/", include("dj_rest_auth.registration.urls")
+    ),  # Регистрация
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    path("api/schema/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
-    path("api/schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger-ui"),
-
+    path(
+        "api/schema/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
+    path(
+        "api/schema/swagger-ui/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
     # tinymce editor
-    path('tinymce/', include('tinymce.urls')),
+    path("tinymce/", include("tinymce.urls")),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += [path('__debug__/', include(debug_toolbar.urls)),]
-    #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    urlpatterns += [
+        path("__debug__/", include(debug_toolbar.urls)),
+    ]
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

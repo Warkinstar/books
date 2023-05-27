@@ -236,11 +236,16 @@ class RecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
 
 
 class RecordFileCreateView(
-    LoginRequiredMixin, TemplateResponseMixin, View
+    LoginRequiredMixin, UserPassesTestMixin, TemplateResponseMixin, View
 ):
     """Добавляет документ-файл к записи"""
 
     template_name = "learning/record_file_formset.html"
+
+    def test_func(self):
+        """Check user by teachers group"""
+        if self.request.user.groups.filter(name=group).exists():
+            return True
 
     def get_formset(self, data=None, files=None):
         RecordFileFormset = inlineformset_factory(
@@ -253,7 +258,7 @@ class RecordFileCreateView(
         return RecordFileFormset(instance=self.record, data=data, files=files)
 
     def dispatch(self, request, pk):
-        self.record = get_object_or_404(Record, pk=pk, author=request.user)
+        self.record = get_object_or_404(Record, pk=pk)
         return super().dispatch(request, pk)
 
     def get(self, request, *args, **kwargs):
@@ -266,6 +271,7 @@ class RecordFileCreateView(
             formset.save()
             return redirect(reverse_lazy("record", kwargs={"pk": self.record.id}))
         return self.render_to_response({"record": self.record, "formset": formset})
+
 
 class SubTopicNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
     template_name = "learning/subtopic_new.html"
@@ -402,9 +408,7 @@ class SubRecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
         return reverse('subtopic', kwargs={'pk': self.kwargs['pk']}) """
 
 
-class SubRecordFileCreateView(
-    LoginRequiredMixin, TemplateResponseMixin, View
-):
+class SubRecordFileCreateView(LoginRequiredMixin, TemplateResponseMixin, View):
     """Добавляет документ-файл к записи"""
 
     template_name = "learning/subrecord_file_formset.html"
@@ -425,14 +429,18 @@ class SubRecordFileCreateView(
 
     def get(self, request, *args, **kwargs):
         formset = self.get_formset()
-        return self.render_to_response({"subrecord": self.subrecord, "formset": formset})
+        return self.render_to_response(
+            {"subrecord": self.subrecord, "formset": formset}
+        )
 
     def post(self, request, *args, **kwargs):
         formset = self.get_formset(data=request.POST, files=request.FILES)
         if formset.is_valid():
             formset.save()
             return redirect(reverse_lazy("subrecord", kwargs={"pk": self.subrecord.id}))
-        return self.render_to_response({"subrecord": self.subrecord, "formset": formset})
+        return self.render_to_response(
+            {"subrecord": self.subrecord, "formset": formset}
+        )
 
 
 class SearchResultsListView(ListView):  # Полнотекстный поиск нужен ли?
