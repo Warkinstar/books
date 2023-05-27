@@ -244,8 +244,7 @@ class RecordFileCreateView(
 
     def test_func(self):
         """Check user by teachers group"""
-        if self.request.user.groups.filter(name=group).exists():
-            return True
+        return self.request.user.groups.filter(name=group).exists()
 
     def get_formset(self, data=None, files=None):
         RecordFileFormset = inlineformset_factory(
@@ -408,10 +407,15 @@ class SubRecordNewView(LoginRequiredMixin, UserPassesTestMixin, FormView):
         return reverse('subtopic', kwargs={'pk': self.kwargs['pk']}) """
 
 
-class SubRecordFileCreateView(LoginRequiredMixin, TemplateResponseMixin, View):
+class SubRecordFileCreateView(
+    LoginRequiredMixin, UserPassesTestMixin, TemplateResponseMixin, View
+):
     """Добавляет документ-файл к записи"""
 
     template_name = "learning/subrecord_file_formset.html"
+
+    def test_func(self):
+        return self.request.user.groups.filter(name=group).exists()
 
     def get_formset(self, data=None, files=None):
         SubRecordFileFormset = inlineformset_factory(
@@ -424,7 +428,7 @@ class SubRecordFileCreateView(LoginRequiredMixin, TemplateResponseMixin, View):
         return SubRecordFileFormset(instance=self.subrecord, data=data, files=files)
 
     def dispatch(self, request, pk):
-        self.subrecord = get_object_or_404(SubRecord, pk=pk, author=request.user)
+        self.subrecord = get_object_or_404(SubRecord, pk=pk)
         return super().dispatch(request, pk)
 
     def get(self, request, *args, **kwargs):
