@@ -1,12 +1,13 @@
 {% extends "_base.html" %}
 {% load crispy_forms_tags %}
+{% load has_group %}
 
 {% load i18n %}
 
 {% block head_title %}{% trans "E-mail Addresses" %}{% endblock %}
 
 {% block content %}
-    <h1>{% trans "E-mail Addresses" %}</h1>
+    <h1>{% trans "Профиль" %}</h1>
 {% if user.emailaddress_set.all %}
 <p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
 
@@ -55,6 +56,13 @@
     </form>
   {% endif %}
 
+  <hr>
+  {% if request.user|has_group:"teachers" %}
+    <div class="alert"
+  {% else %}
+    <button class="btn btn-success">Запросить права преподавателя</button>
+  {% endif %}
+
 {% endblock %}
 
 
@@ -71,5 +79,7 @@
     });
   }
 })();
+
+
 </script>
 {% endblock %}

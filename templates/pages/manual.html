@@ -1,0 +1,19 @@
+{% extends "_base.html" %}
+
+{% block title %}
+  Руководство по сайту
+{% endblock title %}
+
+
+{% block content %}
+<div class="my-3">
+    <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" width="560" height="315" src="https://www.youtube.com/embed/Mu9FPY3YUm8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+</div>
+
+<div class="alert alert-info" role="alert">
+     Посмотреть о работе сайта в текстовом формате по <a class='text' href="{% url 'record' pk='bdd55033-7ab2-407f-8f9c-f4b155f3222f' %}">ссылке</a>
+ </div>
+
+{% endblock content %}
