@@ -184,7 +184,6 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 ACCOUNT_SESSION_REMEMBER = True  # Remember me box True = выкл
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True  # Ввод пароля один раз в Sign up
@@ -200,6 +199,14 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_FORMS = {
     "signup": "accounts.forms.CustomSignupForm",
 }
+
+# Google smpt
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER", default="-")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD", default="-")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 # Для рассылки
 DEFAULT_FROM_EMAIL = "admin@department.com"

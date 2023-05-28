@@ -9,3 +9,4 @@ db.sqlite3
 .venv/
 staticfiles/
 sixth-module-346216-83f0fb62a7b0.json
+.env
